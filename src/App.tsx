@@ -20,7 +20,6 @@ function App() {
                 <Route path={ROUTE_LINK.LOGIN} element={<Login/>} />
                 <Route path="/" element={<CustomLayout/>}>
                     <Route path={ROUTE_LINK.DASHBOARD} element={<Dashboard/>} />
-                        
                     <Route path={ROUTE_LINK.HOME}  element={<Home/>} />
                     <Route path={ROUTE_LINK.ORDER} element={<Order/>} />
                     <Route path={ROUTE_LINK.PAYMENT} element={<Payment/>} />

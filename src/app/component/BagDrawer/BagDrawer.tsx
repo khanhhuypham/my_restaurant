@@ -17,15 +17,15 @@ import { ROUTE_LINK } from "../../routes/route-link";
 
 export const BagDrawer = (
     { openDrawer, setOpenDrawer, input }:
-    {
-        openDrawer: boolean;
-        setOpenDrawer: Dispatch<SetStateAction<boolean>>;
-        input: MenuItem[]
+        {
+            openDrawer: boolean;
+            setOpenDrawer: Dispatch<SetStateAction<boolean>>;
+            input: MenuItem[]
 
-    }
-) => {  
+        }
+) => {
     const [data, setData] = useState<MenuItem[]>([])
-    
+
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const closeDrawer = () => {
@@ -46,7 +46,6 @@ export const BagDrawer = (
         </div>
     );
 
-
     const renderListHeader = (
         <div className="space-y-4 p-0">
             <hr className="solid" />
@@ -55,11 +54,11 @@ export const BagDrawer = (
                     New Chopstix Restaurant
                 </div>
                 <div>
-                    <EnvironmentFilled className="text-red-700"/> 123 Fake
+                    <EnvironmentFilled className="text-red-700" /> 123 Fake
                     Street, Hayward, CA 94544
                 </div>
                 <div>
-                    <PhoneFilled className="text-red-700"/> (510) 555-1234
+                    <PhoneFilled className="text-red-700" /> (510) 555-1234
                 </div>
             </div>
             <hr className="solid" />
@@ -70,7 +69,7 @@ export const BagDrawer = (
         <div >
             <div className="flex flex-col p-4 ">
                 <span className="text-lg font-semibold">
-                    Subtotal: ${data.map((item) => Number(item.price) *Number(item.quantity)).reduce((acc, curr) => acc + curr, 0)}
+                    Subtotal: ${data.map((item) => Number(item.price) * Number(item.quantity)).reduce((acc, curr) => acc + curr, 0)}
                 </span>
 
 
@@ -83,16 +82,26 @@ export const BagDrawer = (
             <hr className="solid" />
             <div className="p-4">
                 <span className="text-lg font-semibold">
-                    Total: ${data.map((item) => Number(item.price) *Number(item.quantity)).reduce((acc, curr) => acc + curr, 0)}
+                    Total: ${data.map((item) => Number(item.price) * Number(item.quantity)).reduce((acc, curr) => acc + curr, 0)}
                 </span>
+            </div>
+
+
+            <div >
+                <Button
+                    className="rounded-none font-bold bg-red-700"
+                    block
+                    type="primary"
+                    size="large"
+                    onClick={() => {
+                        navigate(ROUTE_LINK.PAYMENT)
+                    }}
+                >
+                    CHECKOUT
+                </Button>
             </div>
         </div>
     );
-
-
-    useEffect(() => {
-        setData(input)
-    }, [input])
 
     const renderBtnChangeQuantity = (item: MenuItem) => {
 
@@ -104,11 +113,11 @@ export const BagDrawer = (
                         className='rounded-none rounded-l-md'
                         icon={<MinusOutlined />}
                         onClick={() => {
-                
+
                             let cloneData = data.map(element => {
                                 if (item.id == element.id) {
                                     let quantity = element.quantity - 1
-                                    quantity =  quantity <= 0 ? 0 : quantity
+                                    quantity = quantity <= 0 ? 0 : quantity
 
                                     return { ...element, quantity: quantity }; // Create a new object with updated quantity
                                 } else {
@@ -126,8 +135,8 @@ export const BagDrawer = (
                             let cloneData = data.map(element => {
                                 if (item.id == element.id) {
                                     let quantity = Number(e.target.value)
-                                    quantity =  quantity >= 999 ? 999 : quantity
-                                    return { ...element, quantity:quantity }; // Create a new object with updated quantity
+                                    quantity = quantity >= 999 ? 999 : quantity
+                                    return { ...element, quantity: quantity }; // Create a new object with updated quantity
                                 } else {
                                     return element; // Return the original item if it's not the one to update
                                 }
@@ -142,12 +151,12 @@ export const BagDrawer = (
                         className='rounded-none rounded-r-md'
                         icon={<PlusOutlined />}
                         onClick={() => {
-                
+
                             let cloneData = data.map(element => {
                                 if (item.id == element.id) {
                                     let quantity = element.quantity + 1
-                                    quantity =  quantity >= 999 ? 999 : quantity
-                                    return { ...element, quantity:quantity }; // Create a new object with updated quantity
+                                    quantity = quantity >= 999 ? 999 : quantity
+                                    return { ...element, quantity: quantity }; // Create a new object with updated quantity
                                 } else {
                                     return element; // Return the original item if it's not the one to update
                                 }
@@ -160,7 +169,7 @@ export const BagDrawer = (
 
                 <Button
                     type="text"
-                    onClick={() => { 
+                    onClick={() => {
                         dispatch(removeItemFromCart(item))
                     }}
                 >
@@ -169,6 +178,13 @@ export const BagDrawer = (
             </div>
         );
     }
+
+
+    useEffect(() => {
+        setData(input)
+    }, [input])
+
+   
 
 
     return (
@@ -215,20 +231,6 @@ export const BagDrawer = (
 
                 <div className="flex-none">
                     {renderCostFooter}
-                    <div >
-                        <Button
-                            className="rounded-none font-bold bg-red-700"
-                            block
-                            // style={mainButtonStyle}
-                            type="primary"
-                            size="large"
-                            onClick={() => {
-                                navigate(ROUTE_LINK.PAYMENT)
-                            }}
-                        >
-                            CHECKOUT
-                        </Button>
-                    </div>
                 </div>
 
             </div>

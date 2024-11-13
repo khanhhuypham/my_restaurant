@@ -26,18 +26,25 @@ const { Header, Content, Footer, Sider } = Layout;
 const items = [
     {
         key: String(1),
+        label: (<NavLink to={ROUTE_LINK.HOME}>
+            <span className="font-semibold text-xl">Home</span>
+        </NavLink>),
+    },
+
+    {
+        key: String(2),
         label: (<NavLink to={ROUTE_LINK.DASHBOARD}>
             <span className="font-semibold text-xl">Dashboard</span>
         </NavLink>),
     },
     {
-        key: String(2),
-        label: (<NavLink to={ROUTE_LINK.HOME}>
-            <span className="font-semibold text-xl">Home</span>
+        key: String(3),
+        label: (<NavLink to={ROUTE_LINK.ORDER}>
+            <span className="font-semibold text-xl">Order</span>
         </NavLink>),
     },
     {
-        key: String(3),
+        key: String(4),
         label: (<NavLink to="/about"> 
             <span className="font-semibold text-xl">About</span>
         </NavLink>
@@ -74,7 +81,7 @@ export const CustomLayout: React.FC = () => {
                 <Menu
                     // theme="dark"
                     mode="horizontal"
-                    defaultSelectedKeys={['2']}
+                    defaultSelectedKeys={['1']}
                     items={items}
                     style={{ flex: 1, minWidth: 0 }}
                 />
