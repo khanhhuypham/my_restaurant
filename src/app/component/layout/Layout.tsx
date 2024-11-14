@@ -17,8 +17,8 @@ import { ROUTE_LINK } from "../../routes/route-link";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { BagDrawer } from "../BagDrawer/BagDrawer";
 import { cartSelector } from "../../store/cart/cartSlice";
-
-
+import logo from "../../assets/images/logo-light.png";
+// import logo from "../assets/images/logo-light.png";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -27,10 +27,10 @@ const items = [
     {
         key: String(1),
         label: (<NavLink to={ROUTE_LINK.HOME}>
-            <span className="font-semibold text-xl">Home</span>
+            <img src={logo} alt="logo" className=" w-16 h-16"/>
         </NavLink>),
     },
-
+ 
     {
         key: String(2),
         label: (<NavLink to={ROUTE_LINK.DASHBOARD}>
@@ -45,10 +45,18 @@ const items = [
     },
     {
         key: String(4),
-        label: (<NavLink to="/about"> 
-            <span className="font-semibold text-xl">About</span>
+        label: (<NavLink to={ROUTE_LINK.CATEGORY_MANAGEMENT}> 
+            <span className="font-semibold text-xl">Category</span>
         </NavLink>
-    ),
+        )
+    },
+
+    {
+        key: String(5),
+        label: (<NavLink to={ROUTE_LINK.ITEM_MANAGEMENT}> 
+            <span className="font-semibold text-xl">Item</span>
+        </NavLink>
+        )
     }
 ]
 

@@ -10,10 +10,19 @@ import { OrderModalContent } from "./OrderModalContent";
 import { useMediaQuery } from "react-responsive";
 import { useAppSelector } from "../../hooks/useRedux";
 import { cartSelector } from "../../store/cart/cartSlice";
+import { categoryService } from "../../services/category/categoryService";
+import { Category } from "../../models/category/category";
 
+
+interface navItem {
+    key: string;
+    href: string;
+    title: JSX.Element ;
+} 
 
 export const Order = () => {
     const [data, setData] = useState<ItemEntity[]>([]);
+    const [categories, setCategories] = useState<navItem[]>(navMenuItems);
     const cardSlice = useAppSelector(cartSelector);
     const [dialog, setDialog] = useState<[open: boolean, content?: JSX.Element | undefined]>([false, undefined]);
 
@@ -31,6 +40,20 @@ export const Order = () => {
     }
 
     useEffect(() => {
+   
+        categoryService.List().then((res) => {
+
+            const categoryList:navItem[] = res.data.map((element) => ({
+                key:element.id.toString(),
+                href:`#${element.id.toString()}`,
+                title:<p className="font-semibold text-lg">{element.name}</p>
+            }))
+            setCategories(categoryList) 
+            console.log(categoryList)
+            
+        }).catch((error) =>{
+            console.log(error)
+        })
 
     }, []);
 
@@ -39,14 +62,13 @@ export const Order = () => {
 
     return (
         <>
-
+ 
             <div className="flex pl-[10%] pr-[15%]">
                 <Anchor
                     offsetTop={75}
                     targetOffset={125}
-                    items={navMenuItems}
+                    items={categories}
                 />
-
                 <div className="space-y-16">
                     {navMenuItems.map((navItem) => {
                         return (

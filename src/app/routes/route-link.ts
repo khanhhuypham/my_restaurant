@@ -9,8 +9,9 @@ export const ROUTE_LINK = {
     DASHBOARD: '/dashboard',
     CHAT: '/chat',
     PROFILE: '/profile',
+    //============================================================
+    CATEGORY_MANAGEMENT:"/category_management",
 
-
-
-
+    //============================================================
+    ITEM_MANAGEMENT:"/item_management",
 }

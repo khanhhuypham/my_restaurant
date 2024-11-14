@@ -10,6 +10,8 @@ import { About } from "./app/page/about/About";
 import { Dashboard } from "./app/page/dashboard/Dashboard";
 import { Order } from "./app/page/order/Order";
 import { Payment } from "./app/page/payment/Payment";
+import { CategoryManagement } from "./app/page/categoryManagement/CategoryManagement";
+import { ItemManagement } from "./app/page/ItemManagement/ItemMangement";
 
 
 
@@ -24,6 +26,9 @@ function App() {
                     <Route path={ROUTE_LINK.ORDER} element={<Order/>} />
                     <Route path={ROUTE_LINK.PAYMENT} element={<Payment/>} />
                     <Route path="/about" element={<About/>} />
+
+                    <Route path={ROUTE_LINK.CATEGORY_MANAGEMENT} element={<CategoryManagement/>} />
+                    <Route path={ROUTE_LINK.ITEM_MANAGEMENT} element={<ItemManagement/>} />
                 </Route>
             </Routes>
         </BrowserRouter>
