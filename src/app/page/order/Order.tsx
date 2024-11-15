@@ -1,68 +1,96 @@
 import { useEffect, useState } from "react";
 
-import { Anchor, Button, Card, Modal, Space, Typography } from "antd";
-import {CloseCircleOutlined } from '@ant-design/icons';
-import { ItemEntity } from "../../models/Item/Item";
+import { Anchor, Button, Card, message, Modal, Space, Typography } from "antd";
+import { CloseCircleOutlined } from '@ant-design/icons';
+import { ItemEntity, ItemEntityPage } from "../../models/Item/Item";
 import { menuDataArray } from "../../assets/menuData";
 import { MenuItem } from "../../../types";
 import lineImg from '../../assets/images/line.png';
 import { OrderModalContent } from "./OrderModalContent";
 import { useMediaQuery } from "react-responsive";
-import { useAppSelector } from "../../hooks/useRedux";
-import { cartSelector } from "../../store/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
+import { cartSelector, removeItemFromCart, setCart } from "../../store/cart/cartSlice";
 import { categoryService } from "../../services/category/categoryService";
 import { Category } from "../../models/category/category";
-
+import { Pagination as pageModel } from '../../models/pagination';
+import { ItemService } from "../../services/item/ItemService";
+import { QuantityBtnGroup } from "../../component/Button/ButtonGroup";
 
 interface navItem {
-    key: string;
+    key: number;
     href: string;
-    title: JSX.Element ;
-} 
+    title: JSX.Element;
+}
 
 export const Order = () => {
-    const [data, setData] = useState<ItemEntity[]>([]);
+    const [data, setData] = useState<ItemEntityPage>(new ItemEntityPage());
     const [categories, setCategories] = useState<navItem[]>(navMenuItems);
     const cardSlice = useAppSelector(cartSelector);
+    const dispatch = useAppDispatch();
     const [dialog, setDialog] = useState<[open: boolean, content?: JSX.Element | undefined]>([false, undefined]);
 
-    const showModalCreate = (item:MenuItem) => {
+    const [parameter, setParameter] = useState({
+        pagination: { ...(new pageModel()), limit: 40, page: 1 },
+        category_id: -1
+    });
+
+
+    const isItemExistingInStore = (item: ItemEntity): boolean => {
+        let result = cardSlice.items.find((element) => element.id == item.id)
+        return result === undefined ? false : true
+    }
+
+
+    const showModalCreate = (item: ItemEntity) => {
         let input = item
 
-        const existingItem:MenuItem | undefined = cardSlice.items.find((element) => element.id == item.id)
+        const existingItem: ItemEntity | undefined = cardSlice.items.find((element) => element.id == item.id)
 
-        if (existingItem !== undefined){
+        if (existingItem !== undefined) {
             input = existingItem
         }
 
-        let component = <OrderModalContent item={input} onConfirm={() => setDialog([false, undefined])}/>
+        let component = <OrderModalContent item={input} onConfirm={() => setDialog([false, undefined])} />
         setDialog([true, component])
     }
 
+
+
     useEffect(() => {
-   
+
         categoryService.List().then((res) => {
 
-            const categoryList:navItem[] = res.data.map((element) => ({
-                key:element.id.toString(),
-                href:`#${element.id.toString()}`,
-                title:<p className="font-semibold text-lg">{element.name}</p>
+            const categoryList: navItem[] = res.data.map((element) => ({
+                key: element.id,
+                href: `#${element.id.toString()}`,
+                title: <p className="font-semibold text-lg">{element.name}</p>
             }))
-            setCategories(categoryList) 
+            setCategories(categoryList)
             console.log(categoryList)
-            
-        }).catch((error) =>{
+
+        }).catch((error) => {
             console.log(error)
         })
 
+        ItemService.List(parameter).then((res) => {
+            if (res.status == 200) {
+                setData(res.data);
+            } else {
+                message.error(res.message)
+            }
+
+
+        }).catch((error) => {
+            console.log(error);
+        });
+
     }, []);
 
-    const isScreenXXSCustom = useMediaQuery({maxWidth: 400});
 
 
     return (
         <>
- 
+
             <div className="flex pl-[10%] pr-[15%]">
                 <Anchor
                     offsetTop={75}
@@ -70,13 +98,13 @@ export const Order = () => {
                     items={categories}
                 />
                 <div className="space-y-16">
-                    {navMenuItems.map((navItem) => {
+                    {categories.map((cate) => {
                         return (
-                            <div id={navItem.key} key={navItem.key} className="space-y-10">
+                            <div id={cate.key.toString()} key={cate.key} className="space-y-10">
 
                                 <div className="space-y-2">
                                     <h1 className="text-center font-bold text-3xl">
-                                        {navItem.title}
+                                        {cate.title}
                                     </h1>
                                     <img
                                         className="h-6 flex m-auto"
@@ -86,27 +114,84 @@ export const Order = () => {
 
                                 </div>
 
-                                <div className="grid grid-cols-3 gap-x-0 gap-y-8 justify-items-center">
+                                <div className="grid grid-cols-4 gap-x-0 gap-y-8 justify-items-center">
 
-                                    {menuDataArray.filter((item: MenuItem) => item.category === navItem.key).map((item: MenuItem) => {
+                                    {data.list.filter((item: ItemEntity) => item.category?.id === cate.key).map((item: ItemEntity) => {
+
+                                        // const actions: React.ReactNode[] = [
+                                        //     <EditOutlined key="edit" />,
+                                        //     <SettingOutlined key="setting" />,
+                                        //     <EllipsisOutlined key="ellipsis" />,
+                                        // ];
+
+
+
                                         return (
                                             <Card
-
+                                                hoverable
                                                 className="w-[90%] drop-shadow-md"
                                                 cover={<img alt={item.name} src={item.imgSrc} />}
                                                 styles={{
                                                     cover: {
                                                         borderBottom: `#A71316 6px solid`
+                                                    },
+                                                    body: {
+                                                        padding: "12px 15px"
                                                     }
                                                 }}
-                                                onClick={() => showModalCreate(item)}
+                                                onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                                                    showModalCreate(item)
+                                                }}
                                             >
-                                                <h1 className="text-xl font-semibold">{item.name}</h1>
-                                                {item.price !== "0.00" && (
+                                                <div className="space-y-2">
+
+                                                    <h1 className="text-xl font-semibold">{item.name}</h1>
                                                     <p className="font-medium">
                                                         {"$" + item.price}
                                                     </p>
-                                                )}
+                                                    <div className="h-full flex justify-between items-end space-x-3">
+                                                      
+
+
+                                                        <div className="h-full flex justify-end">
+
+
+                                                            {
+                                                                isItemExistingInStore(item) &&
+                                                                <div>
+                                                                    <QuantityBtnGroup quantity={1} />
+                                                                </div>
+                                                            }
+
+                                                            {
+                                                                !isItemExistingInStore(item) &&
+                                                                <Button type="text" color="default" variant="filled" onClick={(e) => {
+                                                                    e.stopPropagation()
+                                                                    e.preventDefault()
+                                                                    dispatch(setCart(item))
+                                                                }}>
+                                                                    <i className="fa-solid fa-cart-arrow-down"></i>
+                                                                </Button>
+                                                            }
+
+
+                                                            {
+                                                                isItemExistingInStore(item) &&
+                                                                <Button type="text" color="danger" variant="filled" onClick={(e) => {
+                                                                    e.stopPropagation()
+                                                                    e.preventDefault()
+                                                                    dispatch(removeItemFromCart(item))
+                                                                }}>
+                                                                    <i className="fa-solid fa-thumbtack-slash"></i>
+                                                                </Button>
+                                                            }
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
                                             </Card>
                                         )
                                     })}
@@ -119,14 +204,14 @@ export const Order = () => {
             </div>
 
             <Modal
-             
+
                 styles={{
-                    content: { padding: 0 }, 
+                    content: { padding: 0 },
                 }}
 
                 width={800}
                 footer={false}
-                closeIcon={<CloseCircleOutlined className="text-white"/>}
+                closeIcon={<CloseCircleOutlined className="text-white" />}
                 open={dialog[0]}
                 onCancel={() => setDialog([false, undefined])}
             >
@@ -140,40 +225,13 @@ export const Order = () => {
 
 
 const navMenuItems = [
+
     {
-        key: 'appetizers',
-        href: '#appetizers',
-        title: <p className="font-semibold text-lg">APPETIZERS</p>
-    },
-    {
-        key: 'soups',
-        href: '#soups',
-        title: <p className="font-semibold text-lg">SOUPS</p>
-    },
-    {
-        key: 'main-entree',
-        href: '#main-entree',
-        title: <p className="font-semibold text-lg">MAIN ENTREÉS</p>
-    },
-    {
-        key: 'bowls',
-        href: '#bowls',
-        title: <p className="font-semibold text-lg">ALL DAY RICE BOWLS</p>
-    },
-    {
-        key: 'fried-rice-noodles',
+        key: 5,
         href: '#fried-rice-noodles',
         title: <p className="font-semibold text-lg">FRIED RICE & NOODLES</p>
     },
-    {
-        key: 'side-orders',
-        href: '#side-orders',
-        title: <p className="font-semibold text-lg">SIDE ORDERS</p>
-    },
-    {
-        key: 'beverages',
-        href: '#beverages',
-        title: <p className="font-semibold text-lg">BEVERAGES</p>
-    },
+
 ];
+
 

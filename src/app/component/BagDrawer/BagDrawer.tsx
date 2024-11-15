@@ -13,18 +13,18 @@ import { removeItemFromCart } from "../../store/cart/cartSlice";
 import { useAppDispatch } from "../../hooks/useRedux";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_LINK } from "../../routes/route-link";
+import { ItemEntity } from "../../models/Item/Item";
 
 
 export const BagDrawer = (
     { openDrawer, setOpenDrawer, input }:
-        {
-            openDrawer: boolean;
-            setOpenDrawer: Dispatch<SetStateAction<boolean>>;
-            input: MenuItem[]
-
-        }
+    {
+        openDrawer: boolean;
+        setOpenDrawer: Dispatch<SetStateAction<boolean>>;
+        input: ItemEntity[]
+    }
 ) => {
-    const [data, setData] = useState<MenuItem[]>([])
+    const [data, setData] = useState<ItemEntity[]>([])
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -103,7 +103,7 @@ export const BagDrawer = (
         </div>
     );
 
-    const renderBtnChangeQuantity = (item: MenuItem) => {
+    const renderBtnChangeQuantity = (item: ItemEntity) => {
 
         return (
             <div className="flex space-x-2">
@@ -115,7 +115,8 @@ export const BagDrawer = (
                         onClick={() => {
 
                             let cloneData = data.map(element => {
-                                if (item.id == element.id) {
+                                
+                                if (item.id === element.id) {
                                     let quantity = element.quantity - 1
                                     quantity = quantity <= 0 ? 0 : quantity
 
@@ -124,16 +125,13 @@ export const BagDrawer = (
                                     return element; // Return the original item if it's not the one to update
                                 }
                             });
-
                             setData(cloneData)
-
                         }}
                     />
                     <Input
-
                         onChange={(e) => {
                             let cloneData = data.map(element => {
-                                if (item.id == element.id) {
+                                if (item.id === element.id) {
                                     let quantity = Number(e.target.value)
                                     quantity = quantity >= 999 ? 999 : quantity
                                     return { ...element, quantity: quantity }; // Create a new object with updated quantity
@@ -153,7 +151,7 @@ export const BagDrawer = (
                         onClick={() => {
 
                             let cloneData = data.map(element => {
-                                if (item.id == element.id) {
+                                if (item.id === element.id) {
                                     let quantity = element.quantity + 1
                                     quantity = quantity >= 999 ? 999 : quantity
                                     return { ...element, quantity: quantity }; // Create a new object with updated quantity
@@ -221,8 +219,14 @@ export const BagDrawer = (
                                     <span className="text-md">${item.price}</span>
                                 </div>
 
-                                <div>Note:asdasdas</div>
 
+                                {
+                                    item.note && (
+                                        <div>Note:{item.note}</div>
+                                    )
+                                }
+                                
+    
                                 {renderBtnChangeQuantity(item)}
                             </div>
                         </List.Item>

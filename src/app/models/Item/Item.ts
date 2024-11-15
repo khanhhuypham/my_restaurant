@@ -12,6 +12,10 @@ export class ItemEntity {
     category: Category | undefined;
     children: ChidlrenItem[] = [];
     out_of_stock: boolean = false;
+    printer_id: number | undefined;
+    quantity: number = 0;
+    note: string | undefined ;
+
 
     constructor(data?: Partial<ItemEntity>) {
         Object.assign(this, data);
@@ -22,8 +26,8 @@ export class ItemEntityPage {
 
     list: ItemEntity[] = [];
     total_record: number = 0
-    cursor: number = 0;
-    offset: number = 0;
+    page: number = 0;
+    limit: number = 0;
 
     constructor(data?: Partial<ItemEntityPage>) {
         Object.assign(this, data);

@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import { MenuItem } from "../../../types";
 import { cartSelector } from "../../store/cart/cartSlice";
 import { PhoneFilled, EnvironmentFilled } from "@ant-design/icons";
+import { ItemEntity } from "../../models/Item/Item";
 
 export const Payment = () => {
-    const [data, setData] = useState<MenuItem[]>([]);
+    const [data, setData] = useState<ItemEntity[]>([]);
     const dispatch = useAppDispatch();
     const cardSlice = useAppSelector(cartSelector);
 

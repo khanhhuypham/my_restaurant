@@ -13,6 +13,8 @@ import { ItemService } from "../../services/item/ItemService";
 import { Unit } from "../../models/unit/unit";
 import { ChidlrenItem } from "../../models/Item/item-children";
 import { time } from "console";
+import { Printer } from "../../models/printer/Printer";
+import { printerService } from "../../services/printer/PrinterService";
 
 const { Option } = Select;
 
@@ -32,7 +34,7 @@ export const CreateItem = ({
     const [data, setData] = useState<ItemEntity>(new ItemEntity());
     const [categories, setCategories] = useState<Category[]>([]);
     const [units, setUnits] = useState<Unit[]>([]);
-    const [printers, setPrinters] = useState<string[]>([]);
+    const [printers, setPrinters] = useState<Printer[]>([]);
     const [children, setChildren] = useState<ChidlrenItem[]>([]);
 
     const [form] = Form.useForm();
@@ -42,8 +44,9 @@ export const CreateItem = ({
 
         if (data.id == 0) {
             ItemService.Create(data).then((res) => {
-                if (res.status == 200) {
-                    message.success("update successfully")
+                
+                if (res.status == 201) {
+                    message.success("Create successfully")
                     { onConfirm && onConfirm() }
                 } else {
                     message.error(res.message)
@@ -103,6 +106,17 @@ export const CreateItem = ({
             console.log(error);
         });
 
+        printerService.List().then((res) => {
+            if (res.status == 200) {
+                setPrinters(res.data);
+            } else {
+                message.error(res.message)
+            }
+        }).catch((error) => {
+            console.log(error);
+        });
+
+
     }, []);
 
 
@@ -111,9 +125,10 @@ export const CreateItem = ({
 
         form.setFieldsValue({
             name: item.name,
-            price: item.price,
+            price: item.id > 0 ? item.price : undefined,    
             children: item.children.map((child) => child.id),
             category: item.category?.id,
+            printer: item.printer_id,
             unit: item.unit?.id,
             description: item.description
         });
@@ -143,11 +158,13 @@ export const CreateItem = ({
                     className="mb-3"
                 >
                     <Input
-                        placeholder="Enter..."
+                        placeholder=" Please enter item name..."
                         value={data.name}
                         onChange={(e) => {
                             setData({ ...data, name: e.target.value })
                         }}
+
+                        min={1}
                     />
                 </Form.Item>
 
@@ -156,9 +173,17 @@ export const CreateItem = ({
                     rules={[
                         { required: true, message: 'price is required' },
                         { type: "number" },
+                        // { min:1.0, message:"price must be greater than 1$"},
                     ]}
                 >
-                    <InputNumber style={{ width: '100%' }} />
+                    <InputNumber style={{ width: '100%' }}  placeholder=" Please enter price..."
+                        onChange={(value:number|null) => {
+                            if (value !== null){
+                              setData({ ...data, price: Number(value) })
+                            }
+                        }}
+                    
+                    />
                 </Form.Item>
 
                 <div className="grid grid-cols-2 gap-x-4 flex items-center">
@@ -184,7 +209,7 @@ export const CreateItem = ({
 
                     <Form.Item name="category" label="Category" rules={[{ required: true }]} className="mb-3">
                         <Select 
-                            placeholder="Select a option" 
+                            placeholder="Please Select a category" 
                             options={categories.map((cate) =>({
                                 label: cate.name,
                                 value: cate.id
@@ -200,15 +225,25 @@ export const CreateItem = ({
                 <div className="grid grid-cols-2 gap-x-4 flex items-center">
 
                     <Form.Item name="printer" label="Printer" className="mb-3">
-                        <Select placeholder="Select a option" allowClear >
-                            {/* {customerSource.map((value, _) => <Option key={value.id} value={value.id}>{value.name}</Option>)} */}
-                        </Select>
+
+                    <Select 
+                            allowClear
+                            placeholder="Please select a printer" 
+                            options={printers.map((printer) =>({
+                                label: printer.name,
+                                value: printer.id
+                            }))}
+                            onChange={(value:number) => {
+                                setData({ ...data, printer_id:printers.find((printer) => printer.id == value)?.id ?? undefined})
+                            }}
+                        />
+    
                     </Form.Item>
 
                     <Form.Item name="unit" label="Unit" className="mb-3">
                   
                         <Select 
-                            placeholder="Select a option" 
+                            placeholder="please select a unit" 
                             allowClear 
                             options={units.map((unit) =>({
                                 label: unit.name,

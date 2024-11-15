@@ -2,12 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { MenuItem } from "../../../types";
 import { stat } from "fs";
+import { ItemEntity } from "../../models/Item/Item";
 
 
 
 
 export interface ICartState {
-    items: MenuItem[];
+    items: ItemEntity[];
 }
 
 const initialState: ICartState = {
@@ -19,7 +20,7 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         
-        setCart: (state: ICartState, action: PayloadAction<MenuItem>) => {
+        setCart: (state: ICartState, action: PayloadAction<ItemEntity>) => {
             const index: number | undefined = state.items.findIndex((item) => item.id == action.payload.id)
           
             if (index === -1){
@@ -30,19 +31,18 @@ export const cartSlice = createSlice({
 
            
         },
-
           
-        removeItemFromCart: (state: ICartState, action: PayloadAction<MenuItem>) => {
+        removeItemFromCart: (state: ICartState, action: PayloadAction<ItemEntity>) => {
             const index: number | undefined = state.items.findIndex((item) => item.id == action.payload.id)
             
             if (index !== -1){
                 state.items.splice(index, 1);
             }
 
-           
         },
 
-               
+
+           
     
     },
 });

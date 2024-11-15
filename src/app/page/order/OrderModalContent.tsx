@@ -6,6 +6,8 @@ import { useMediaQuery } from 'react-responsive';
 import { CustomOption, MenuItem } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { cartSelector, setCart } from '../../store/cart/cartSlice';
+import { ItemEntity } from '../../models/Item/Item';
+import { validateHeaderName } from 'http';
 
 const { TextArea } = Input;
 
@@ -15,27 +17,26 @@ export const OrderModalContent = ({
     onConfirm,
     onClose,
 }: {
-    item: MenuItem;
+    item: ItemEntity;
     onConfirm?: () => void;
     onClose?: () => void;
 }) => {
 
     // const { token: { colorPrimary }, } = theme.useToken();
-    const [quantity,setQuantity] = useState<number>(1)
+    const [data, setData] = useState<ItemEntity>(new ItemEntity());
     const [form] = Form.useForm();
-
     const dispatch = useAppDispatch();
 
     const handleChangeQuantity = (quantity: number) => {
 
-        if (quantity <= 0){
+        if (quantity <= 0) {
             quantity = 0
+        } else if (quantity >= 999) {
+            quantity = 999
         }
 
+        setData({ ...data, quantity: quantity })
 
-        form.setFieldValue("quantity", quantity)
-        setQuantity(quantity)
-        
     }
 
 
@@ -61,11 +62,11 @@ export const OrderModalContent = ({
     }
 
 
-    const onFinish = (values: MenuItem) => {
-        console.log(values)
-        if (quantity >= 0){
-            dispatch(setCart({...item,...values}))
-            {onConfirm && onConfirm()}
+    const onFinish = (values: ItemEntity) => {
+
+        if (item.quantity >= 0) {
+            dispatch(setCart({ ...data, ...values }))
+            { onConfirm && onConfirm() }
         }
     };
 
@@ -75,13 +76,12 @@ export const OrderModalContent = ({
 
         form.setFieldsValue({
             name: item.name,
-            quantity: item.quantity,
             description: item.description,
-            note: "huy"
+            note: item.note
         });
-        setQuantity(item.quantity)
 
-        
+        setData(item)
+
     }, [item]);
 
     return (
@@ -103,56 +103,70 @@ export const OrderModalContent = ({
 
             <div className="space-y-4 pt-6 px-6">
 
-                <div className="space-y-1">
-                    <Form.Item name="name" className='mb-0'>
-                        <Input.TextArea className="font-bold text-4xl" readOnly={true} variant="borderless" autoSize={true} />
-                    </Form.Item>
+                <div className="space-y-4">
+                    <div>
+                        <p className="font-bold text-4xl">{data.name}</p>
+                        {
+                            item.children.map((child) => {
+                                return (
+                                    <p className='text-xs '>
+                                        <span>{child.name}</span>
+                                        <span> x 1</span>
+                                    </p>
+                            )})
+                        }
+                    </div>
 
-                    <Form.Item name="description" >
-                        <Input.TextArea className="font-medium text-md h-max" readOnly={true} variant="borderless" autoSize={true} />
-                    </Form.Item>
+                    <p className="font-bold text-md h-max">{data.description}</p>
+
+
                 </div>
 
                 <hr className="solid"></hr>
 
                 <div className='flex justify-start items-center gap-14'>
-                    <Form.Item name="quantity" label={<h1 className="text-xl font-semibold">Quantity</h1>}>
+                    <Form.Item label={<h1 className="text-xl font-semibold">Quantity</h1>}>
                         <div className='flex rounded-lg'>
                             <Button
                                 className='rounded-none rounded-l-md'
                                 icon={<MinusOutlined />}
-                                onClick={() => handleChangeQuantity(quantity - 1)}
+                                onClick={() => handleChangeQuantity(data.quantity - 1)}
                             />
                             <Input
-                                onChange={(e) => { handleChangeQuantity(Number(e.target.value)) }}
-                                value={quantity}
-                                type="number"
-                                className="rounded-none w-14 text-center"
 
+                                value={data.quantity}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleChangeQuantity(Number(e.target.value))
+                                }}
+                                className="rounded-none w-14 text-center"
+                                type='number'
                             />
                             <Button
                                 className='rounded-none rounded-r-md'
                                 icon={<PlusOutlined />}
-                                onClick={() => handleChangeQuantity(quantity + 1)}
+                                onClick={() => handleChangeQuantity(data.quantity + 1)}
                             />
 
                         </div>
                     </Form.Item>
+                    <span className='text-xl font-semibold'>${data.quantity * data.price}</span>
+
+
+
+
                 </div>
 
                 <hr className="solid"></hr>
 
-                {
-                    item.dumpling && renderOption("Dumpling Type", item.dumpling) ||
-                    item.soup && renderOption("Soup Size", item.soup) ||
-                    item.bowl && renderOption("Rice Choice", item.bowl) ||
-                    item.protein && renderOption("Protein Choice", item.protein) ||
-                    item.tea && renderOption("Tea Choice", item.tea) ||
-                    item.coke && renderOption("Soda Choice", item.coke)
-                }
-
                 <Form.Item name="note" label={<h1 className="text-xl font-semibold">Note</h1>}>
-                    <TextArea rows={2} placeholder="Food allergy? Need something put on the side? Let us know. (additional charges may apply and not all changes are possible)"/>
+                    <TextArea
+                        rows={2}
+                        placeholder="Please enter your note before place order"
+                        value={data.description}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                            setData({ ...data, description: e.target.value })
+                        }}
+                    />
                 </Form.Item>
                 <hr className="solid"></hr>
 

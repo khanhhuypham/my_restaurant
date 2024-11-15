@@ -21,16 +21,16 @@ export const ItemManagement = () => {
     const [loading, setLoading] = useState(false);
     const [parameter, setParameter] = useState({
         pagination: { ...(new pageModel()), limit: 10, page: 1 },
-        category_id: 0
+        category_id: -1
     });
-    const debounceValue = useDebounce(parameter.pagination.key_search, 800);
+    const debounceValue = useDebounce(parameter.pagination.search_key, 800);
 
     const columns: ColumnsType<ItemEntity> = [
         {
             title: 'Order',
             dataIndex: 'order',
             key: 'order',
-            render: (record, _, index) => (index + 1).toString(),
+            render: (record, _, index) => (parameter.pagination.page - 1) * parameter.pagination.limit + (index + 1),
             width: 30,
         },
 
@@ -126,8 +126,8 @@ export const ItemManagement = () => {
                     <Button onClick={() => showModalCreate(row)} type="text">
                         <i className="fa-solid fa-pen-to-square"></i>
                     </Button>
-
-                    <Button type="text" danger onClick={() => { }}>
+                    
+                    <Button type="text" danger onClick={() => showModalConfirm(row)}>
                         <i className="fa-solid fa-trash"></i>
                     </Button>
 
@@ -138,19 +138,20 @@ export const ItemManagement = () => {
     ];
 
 
-    const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-    }
+    // const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     let p = { ...parameter.pagination, seach_key: e.target.value }
+    //     setParameter({ ...parameter, pagination: p });
+    // }
 
 
     const fetchData = () => {
 
         setLoading(true);
 
-        ItemService.List(parameter.pagination).then((res) => {
+        ItemService.List(parameter).then((res) => {
 
             setLoading(false);
-            
+
             if (res.status == 200) {
                 setData(res.data);
             } else {
@@ -183,22 +184,21 @@ export const ItemManagement = () => {
 
     const showModalConfirm = (data: ItemEntity) => {
         let content = <ContentOfModalConfirm
-            onClose={() => { setDialog([false]); }}
+            onClose={() => { setDialog([false]); }} 
             onConfirm={() => {
-                ItemService.Update(data).then((res) => {
-
+                ItemService.Delete(data).then((res) =>{
                     if (res.status == 200) {
-                        message.success("Change Status successfully")
+                        message.success("delete successfully")
                         fetchData()
+                        setDialog([false]);
                     } else {
                         message.error(res.message)
                     }
-                    setDialog([false])
-                }).catch((error) => {
-                    console.log(error)
+                }).catch((error) =>{
+                    message.error(error)
                 })
             }}
-            content={<p>Are you sure you want to unenable this category</p>}
+            content={<p>Are you sure you want to remove this item</p>}
         />
         setDialog([true, content])
     }
@@ -208,16 +208,17 @@ export const ItemManagement = () => {
     const header = () => {
         return (
             <div>
-         
+
                 <div className="flex space-x-2">
 
                     <Input
+
                         placeholder="default size"
                         className="w-64"
                         prefix={<i className="fa-solid fa-magnifying-glass" />}
                         allowClear
                         onChange={(e) => {
-                            let p = { ...parameter.pagination, key_search: e.target.value ?? "", page: 1 }
+                            let p = { ...parameter.pagination, search_key: e.target.value ?? "", page: 1 }
                             setParameter({ ...parameter, pagination: p })
                         }}
                     />
@@ -235,6 +236,15 @@ export const ItemManagement = () => {
 
                     />
 
+                    <Button
+                        variant="outlined"
+                        icon={<i className="fa-solid fa-plus" />}
+                        className='h-max'
+                        onClick={() => showModalCreate(new ItemEntity())}
+                    >
+                        Create
+                    </Button>
+
                     {/* <Select
                         placeholder={<span className='text-black'>Source</span>}
                         style={{ width: 200 }}
@@ -249,6 +259,8 @@ export const ItemManagement = () => {
                         options={customerSource.map((s) => ({ label: s.name, value: s.id }))}
 
                     /> */}
+
+
                 </div>
 
             </div>
@@ -305,7 +317,7 @@ export const ItemManagement = () => {
                 footer={() => <Pagination align="end" current={parameter.pagination.page} onChange={onPageChange} total={data?.total_record} />}
                 expandable={{
                     showExpandColumn: false,
-                }} 
+                }}
             />
 
             <Modal
