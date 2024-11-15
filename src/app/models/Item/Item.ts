@@ -13,7 +13,6 @@ export class ItemEntity {
     children: ChidlrenItem[] = [];
     out_of_stock: boolean = false;
 
-
     constructor(data?: Partial<ItemEntity>) {
         Object.assign(this, data);
     }

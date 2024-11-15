@@ -17,7 +17,7 @@ export const ItemService = {
 	
     List: async (pagination:Pagination) => {
         const {data} = await axiosClient().get<BaseResponse<ItemEntityPage>>(`item`,{
-            params: {pagination},
+            params: {...pagination},
         })
         return data
     },

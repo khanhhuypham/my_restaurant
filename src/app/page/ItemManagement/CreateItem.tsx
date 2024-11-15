@@ -185,7 +185,6 @@ export const CreateItem = ({
                     <Form.Item name="category" label="Category" rules={[{ required: true }]} className="mb-3">
                         <Select 
                             placeholder="Select a option" 
-                            allowClear 
                             options={categories.map((cate) =>({
                                 label: cate.name,
                                 value: cate.id

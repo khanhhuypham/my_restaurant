@@ -20,7 +20,7 @@ export const ItemManagement = () => {
     const [dialog, setDialog] = useState<[open: boolean, content?: JSX.Element | undefined]>([false, undefined]);
     const [loading, setLoading] = useState(false);
     const [parameter, setParameter] = useState({
-        pagination: { ...(new pageModel()), offset: 10, cursor: 1 },
+        pagination: { ...(new pageModel()), limit: 10, page: 1 },
         category_id: 0
     });
     const debounceValue = useDebounce(parameter.pagination.key_search, 800);
@@ -28,7 +28,8 @@ export const ItemManagement = () => {
     const columns: ColumnsType<ItemEntity> = [
         {
             title: 'Order',
-            dataIndex: '',
+            dataIndex: 'order',
+            key: 'order',
             render: (record, _, index) => (index + 1).toString(),
             width: 30,
         },
@@ -36,6 +37,7 @@ export const ItemManagement = () => {
         {
             title: 'Name',
             dataIndex: 'name',
+            key: 'name',
             render: (i, { name, out_of_stock }) => {
                 return (
                     <div className={out_of_stock ? "text-red-600" : ""}>
@@ -50,6 +52,7 @@ export const ItemManagement = () => {
         {
             title: 'Price',
             dataIndex: 'price',
+            key: 'price',
             width: 80,
         },
 
@@ -57,6 +60,7 @@ export const ItemManagement = () => {
         {
             title: 'Unit',
             dataIndex: 'unit',
+            key: 'unit',
             render: (i, row) => {
 
                 return <span className="">{row.unit?.name ?? ""}</span>
@@ -65,9 +69,9 @@ export const ItemManagement = () => {
 
         {
             title: 'Category',
-            dataIndex: 'Category',
+            dataIndex: 'category',
+            key: 'category',
             render: (i, { category }) => {
-
                 return <span className="">{category?.name ?? ""}</span>
             }
         },
@@ -75,18 +79,21 @@ export const ItemManagement = () => {
         {
             title: 'Created at',
             dataIndex: 'created_at',
+            key: 'created_at',
             width: 150,
         },
 
         {
             title: 'Updated at',
             dataIndex: 'updated_at',
+            key: 'updated_at',
             width: 150,
         },
 
         {
             title: 'Children items',
             dataIndex: 'children',
+            key: 'children',
             render: (i, { children }) => {
 
                 return (
@@ -103,7 +110,8 @@ export const ItemManagement = () => {
 
         {
             title: 'Action',
-            dataIndex: '',
+            dataIndex: 'action',
+            key: 'action',
             render: (i, row) => (
                 // {row.status == user_status.INACTIVE && disabled}
                 <div className="">
@@ -142,7 +150,7 @@ export const ItemManagement = () => {
         ItemService.List(parameter.pagination).then((res) => {
 
             setLoading(false);
-
+            
             if (res.status == 200) {
                 setData(res.data);
             } else {
@@ -200,38 +208,7 @@ export const ItemManagement = () => {
     const header = () => {
         return (
             <div>
-                <div className="flex justify-between">
-                    <Tabs
-                        defaultActiveKey="-1"
-                        color="orange"
-                        items={[{ text: "Khách chính thức", value: -1 }, { text: "Khách tiềm năng", value: 1 }].map((element, i) => {
-                            return {
-                                key: element.value.toString(),
-                                label: (
-                                    <div className="space-x-2">
-                                        <span>{element.text}</span>
-                                        <span className='text-[11px] p-1 bg-slate-200 rounded-full'>99+</span>
-                                    </div>
-                                ),
-                            };
-                        })}
-
-                    />
-
-                    <div>
-
-                        <Button
-                            color="danger"
-                            variant="solid"
-                            icon={<i className="fa-solid fa-plus"></i>}
-                            className="text-base"
-
-                        >
-                            Add
-                        </Button>
-
-                    </div>
-                </div>
+         
                 <div className="flex space-x-2">
 
                     <Input
@@ -280,7 +257,7 @@ export const ItemManagement = () => {
 
 
     useEffect(fetchData, [
-        parameter.pagination.cursor,
+        parameter.pagination.page,
         parameter.category_id,
         debounceValue
     ]);
@@ -325,7 +302,10 @@ export const ItemManagement = () => {
                 dataSource={data?.list}
                 pagination={false}
                 loading={loading}
-                footer={() => <Pagination align="end" current={parameter.pagination.cursor} onChange={onPageChange} total={data?.total_record} />}
+                footer={() => <Pagination align="end" current={parameter.pagination.page} onChange={onPageChange} total={data?.total_record} />}
+                expandable={{
+                    showExpandColumn: false,
+                }} 
             />
 
             <Modal
