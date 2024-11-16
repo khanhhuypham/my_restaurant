@@ -5,7 +5,7 @@ import { PlusOutlined, MinusOutlined, CloseCircleOutlined } from '@ant-design/ic
 import { useMediaQuery } from 'react-responsive';
 import { CustomOption, MenuItem } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { cartSelector, setCart } from '../../store/cart/cartSlice';
+import { cartSelector, addItem } from '../../store/cart/cartSlice';
 import { ItemEntity } from '../../models/Item/Item';
 import { validateHeaderName } from 'http';
 
@@ -65,7 +65,7 @@ export const OrderModalContent = ({
     const onFinish = (values: ItemEntity) => {
 
         if (item.quantity >= 0) {
-            dispatch(setCart({ ...data, ...values }))
+            dispatch(addItem({ ...data, ...values }))
             { onConfirm && onConfirm() }
         }
     };

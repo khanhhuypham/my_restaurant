@@ -69,7 +69,7 @@ export const BagDrawer = (
         <div >
             <div className="flex flex-col p-4 ">
                 <span className="text-lg font-semibold">
-                    Subtotal: ${data.map((item) => Number(item.price) * Number(item.quantity)).reduce((acc, curr) => acc + curr, 0)}
+                    Subtotal: ${data.map((item) => Number(item.price) * Number(item.quantity)).reduce((acc, curr) => acc + curr, 0).toFixed(3)}
                 </span>
 
 
@@ -82,7 +82,7 @@ export const BagDrawer = (
             <hr className="solid" />
             <div className="p-4">
                 <span className="text-lg font-semibold">
-                    Total: ${data.map((item) => Number(item.price) * Number(item.quantity)).reduce((acc, curr) => acc + curr, 0)}
+                    Total: ${data.map((item) => Number(item.price) * Number(item.quantity)).reduce((acc, curr) => acc + curr, 0).toFixed(3)}
                 </span>
             </div>
 

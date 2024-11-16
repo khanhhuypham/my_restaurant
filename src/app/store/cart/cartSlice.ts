@@ -20,7 +20,7 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         
-        setCart: (state: ICartState, action: PayloadAction<ItemEntity>) => {
+        addItem: (state: ICartState, action: PayloadAction<ItemEntity>) => {
             const index: number | undefined = state.items.findIndex((item) => item.id == action.payload.id)
           
             if (index === -1){
@@ -47,5 +47,5 @@ export const cartSlice = createSlice({
     },
 });
 
-export const {setCart,removeItemFromCart} = cartSlice.actions;
+export const {addItem,removeItemFromCart} = cartSlice.actions;
 export const cartSelector = (state: RootState) => state.cart;

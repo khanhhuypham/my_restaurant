@@ -52,3 +52,9 @@ export function generateRandomArray(length: number, min: number, max: number): n
     return Array.from({ length }, () => Math.floor(Math.random() * (max - min + 1)) + min);
 }
   
+export function moneyFormat(number: number): string{
+
+
+    return new Intl.NumberFormat('vi', {style : 'currency', currency : 'VND'}).format(number)
+}
+  

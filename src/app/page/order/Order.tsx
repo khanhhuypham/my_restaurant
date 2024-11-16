@@ -9,7 +9,7 @@ import lineImg from '../../assets/images/line.png';
 import { OrderModalContent } from "./OrderModalContent";
 import { useMediaQuery } from "react-responsive";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
-import { cartSelector, removeItemFromCart, setCart } from "../../store/cart/cartSlice";
+import { cartSelector, removeItemFromCart, addItem } from "../../store/cart/cartSlice";
 import { categoryService } from "../../services/category/categoryService";
 import { Category } from "../../models/category/category";
 import { Pagination as pageModel } from '../../models/pagination';
@@ -41,6 +41,19 @@ export const Order = () => {
     }
 
 
+    // const updateItemInStore = (item: ItemEntity) => {
+    //     let result = cardSlice.items.find((element) => element.id == item.id)
+
+    //     if (result) {
+    //         dispatch(setCart)
+    //     }
+
+       
+    // }
+
+    
+
+
     const showModalCreate = (item: ItemEntity) => {
         let input = item
 
@@ -53,7 +66,6 @@ export const Order = () => {
         let component = <OrderModalContent item={input} onConfirm={() => setDialog([false, undefined])} />
         setDialog([true, component])
     }
-
 
 
     useEffect(() => {
@@ -78,7 +90,6 @@ export const Order = () => {
             } else {
                 message.error(res.message)
             }
-
 
         }).catch((error) => {
             console.log(error);
@@ -118,14 +129,6 @@ export const Order = () => {
 
                                     {data.list.filter((item: ItemEntity) => item.category?.id === cate.key).map((item: ItemEntity) => {
 
-                                        // const actions: React.ReactNode[] = [
-                                        //     <EditOutlined key="edit" />,
-                                        //     <SettingOutlined key="setting" />,
-                                        //     <EllipsisOutlined key="ellipsis" />,
-                                        // ];
-
-
-
                                         return (
                                             <Card
                                                 hoverable
@@ -150,25 +153,26 @@ export const Order = () => {
                                                         {"$" + item.price}
                                                     </p>
                                                     <div className="h-full flex justify-between items-end space-x-3">
-                                                      
 
-
-                                                        <div className="h-full flex justify-end">
-
-
+                                                        <div>
                                                             {
                                                                 isItemExistingInStore(item) &&
                                                                 <div>
-                                                                    <QuantityBtnGroup quantity={1} />
+                                                                    <QuantityBtnGroup quantity={1} closure={(value:number)=>{
+                                                                        dispatch(addItem({...item,quantity:value}))
+                                                                    }}/>
                                                                 </div>
                                                             }
+                                                        </div>
+
+                                                        <div>
 
                                                             {
                                                                 !isItemExistingInStore(item) &&
                                                                 <Button type="text" color="default" variant="filled" onClick={(e) => {
                                                                     e.stopPropagation()
                                                                     e.preventDefault()
-                                                                    dispatch(setCart(item))
+                                                                    dispatch(addItem({...item,quantity:1}))
                                                                 }}>
                                                                     <i className="fa-solid fa-cart-arrow-down"></i>
                                                                 </Button>
