@@ -9,7 +9,7 @@ export class ItemEntity {
     description: string = "";
     price: number = 0;
     unit: Unit | undefined ;
-    category: Category | undefined;
+    category_id:number = 0;
     children: ChidlrenItem[] = [];
     out_of_stock: boolean = false;
     printer_id: number | undefined;

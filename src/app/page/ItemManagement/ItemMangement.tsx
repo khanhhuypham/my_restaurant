@@ -67,14 +67,14 @@ export const ItemManagement = () => {
             }
         },
 
-        {
-            title: 'Category',
-            dataIndex: 'category',
-            key: 'category',
-            render: (i, { category }) => {
-                return <span className="">{category?.name ?? ""}</span>
-            }
-        },
+        // {
+        //     title: 'Category',
+        //     dataIndex: 'category',
+        //     key: 'category',
+        //     render: (i, { category }) => {
+        //         return <span className="">{category?.name ?? ""}</span>
+        //     }
+        // },
 
         {
             title: 'Created at',

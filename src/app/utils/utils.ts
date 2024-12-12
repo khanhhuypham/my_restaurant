@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
-
-
+import { DATE_FORMAT } from "../constants/constant";
 
 export const containsDiacritics = (str: string): boolean => {
-    return str !== str.normalize('NFD').replace(/\p{M}/gu, '');
-}
-
+    return str !== str.normalize("NFD").replace(/\p{M}/gu, "");
+};
 
 // Function to generate a random UUID
 export const generateUUID = () => {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-        const r = (Math.random() * 16) | 0;
-        const v = c === "x" ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-    });
-}
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+        /[xy]/g,
+        function (c) {
+            const r = (Math.random() * 16) | 0;
+            const v = c === "x" ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+        }
+    );
+};
 
 export const getDeviceUUID = () => {
     let uuid = localStorage.getItem("deviceUUID");
@@ -23,9 +24,9 @@ export const getDeviceUUID = () => {
         localStorage.setItem("deviceUUID", uuid);
     }
     return uuid;
-}
+};
 
-export function useDebounce(cb:string, delay:number) {
+export function useDebounce(cb: string, delay: number) {
     const [debounceValue, setDebounceValue] = useState(cb);
     useEffect(() => {
         const handler = setTimeout(() => {
@@ -39,22 +40,54 @@ export function useDebounce(cb:string, delay:number) {
     return debounceValue;
 }
 
-export function isColorLight(color:string) {
-    const hex = color.replace('#', '');
+export function isColorLight(color: string) {
+    const hex = color.replace("#", "");
     const c_r = parseInt(hex.substr(0, 2), 16);
     const c_g = parseInt(hex.substr(2, 2), 16);
     const c_b = parseInt(hex.substr(4, 2), 16);
-    const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+    const brightness = (c_r * 299 + c_g * 587 + c_b * 114) / 1000;
     return brightness > 155;
 }
 
-export function generateRandomArray(length: number, min: number, max: number): number[] {
-    return Array.from({ length }, () => Math.floor(Math.random() * (max - min + 1)) + min);
+export function generateRandomArray(
+    length: number,
+    min: number,
+    max: number
+): number[] {
+    return Array.from(
+        { length },
+        () => Math.floor(Math.random() * (max - min + 1)) + min
+    );
 }
-  
-export function moneyFormat(number: number): string{
+
+export function moneyFormat(number: number): string {
+    return new Intl.NumberFormat("vi", {
+        style: "currency",
+        currency: "VND",
+    }).format(number);
+}
+
+export function getCurrentDate(): string {
+
+    var date = new Date();
+    var dd = String(date.getDate())
+    var mm = String(date.getMonth())
+    var yyyy = date.getFullYear();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+
+    return + dd + '/' + mm + '/' + yyyy;
+}
 
 
-    return new Intl.NumberFormat('vi', {style : 'currency', currency : 'VND'}).format(number)
-}
-  
+// export function convert(format:string): string {
+
+//     var date = new Date();
+//     var dd = String(date.getDate())
+//     var mm = String(date.getMonth())
+//     var yyyy = date.getFullYear();
+//     var hour = date.getHours();
+//     var minute = date.getMinutes();
+
+//     return + dd + '/' + mm + '/' + yyyy;
+// }

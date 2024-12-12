@@ -57,6 +57,14 @@ const items = [
             <span className="font-semibold text-xl">Item</span>
         </NavLink>
         )
+    },
+
+    {
+        key: String(6),
+        label: (<NavLink to={ROUTE_LINK.CHARGE_METHOD}> 
+            <span className="font-semibold text-xl">Charge method</span>
+        </NavLink>
+        )
     }
 ]
 

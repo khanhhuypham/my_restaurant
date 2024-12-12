@@ -14,4 +14,7 @@ export const ROUTE_LINK = {
 
     //============================================================
     ITEM_MANAGEMENT:"/item_management",
+
+
+    CHARGE_METHOD:"/charge_method",
 }

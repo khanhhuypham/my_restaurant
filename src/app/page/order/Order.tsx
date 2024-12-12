@@ -85,8 +85,10 @@ export const Order = () => {
         })
 
         ItemService.List(parameter).then((res) => {
+          
             if (res.status == 200) {
                 setData(res.data);
+                console.log(data.list)
             } else {
                 message.error(res.message)
             }
@@ -127,7 +129,7 @@ export const Order = () => {
 
                                 <div className="grid grid-cols-4 gap-x-0 gap-y-8 justify-items-center">
 
-                                    {data.list.filter((item: ItemEntity) => item.category?.id === cate.key).map((item: ItemEntity) => {
+                                    {data.list.filter((item: ItemEntity) => item.category_id === cate.key).map((item: ItemEntity) => {
 
                                         return (
                                             <Card

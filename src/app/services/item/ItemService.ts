@@ -54,7 +54,7 @@ export const ItemService = {
             children:item.children.map((child) =>({id:child.id, quantity:0})),
             unit_id:item.unit?.id,
             printer_id:item.printer_id,
-            category_id:item.category?.id,
+            category_id:item.category_id,
             out_of_stock: item.out_of_stock,
             description:item.description
         })
@@ -68,7 +68,7 @@ export const ItemService = {
             children:item.children.map((child) =>({id:child.id, quantity:0})),
             unit_id:item.unit?.id,
             printer_id:item.printer_id,
-            category_id:item.category?.id,
+            category_id:item.category_id,
             out_of_stock:item.out_of_stock,
             description:item.description
         })

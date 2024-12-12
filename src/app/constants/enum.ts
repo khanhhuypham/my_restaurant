@@ -11,7 +11,11 @@ export enum user_status {
   
 // }
 
-
+export enum OrderType {
+    SUBSCRIPTION = 1,
+    SCHEDULE = 2,
+    ORDER_NOW = 3
+}
 
 export enum GENDER {
     female = 0,

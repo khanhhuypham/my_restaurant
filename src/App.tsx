@@ -12,6 +12,7 @@ import { Order } from "./app/page/order/Order";
 import { Payment } from "./app/page/payment/Payment";
 import { CategoryManagement } from "./app/page/categoryManagement/CategoryManagement";
 import { ItemManagement } from "./app/page/ItemManagement/ItemMangement";
+import { ChargeMethod } from "./app/page/chargeMethod/ChargeMethod";
 
 
 
@@ -29,6 +30,7 @@ function App() {
 
                     <Route path={ROUTE_LINK.CATEGORY_MANAGEMENT} element={<CategoryManagement/>} />
                     <Route path={ROUTE_LINK.ITEM_MANAGEMENT} element={<ItemManagement/>} />
+                    <Route path={ROUTE_LINK.CHARGE_METHOD} element={<ChargeMethod/>} />
                 </Route>
             </Routes>
         </BrowserRouter>

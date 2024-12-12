@@ -127,7 +127,7 @@ export const CreateItem = ({
             name: item.name,
             price: item.id > 0 ? item.price : undefined,    
             children: item.children.map((child) => child.id),
-            category: item.category?.id,
+            category: item.category_id,
             printer: item.printer_id,
             unit: item.unit?.id,
             description: item.description
@@ -215,7 +215,7 @@ export const CreateItem = ({
                                 value: cate.id
                             }))}
                             onChange={(value:number) => {
-                                setData({ ...data, category: categories.find((cate) => cate.id == value) })
+                                setData({ ...data, category_id: categories.find((cate) => cate.id == value)?.id ?? 0 })
                             }}
                         />
                            
