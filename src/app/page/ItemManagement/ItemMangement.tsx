@@ -151,8 +151,9 @@ export const ItemManagement = () => {
         ItemService.List(parameter).then((res) => {
 
             setLoading(false);
-
+            console.log(res)
             if (res.status == 200) {
+            
                 setData(res.data);
             } else {
                 message.error(res.message)

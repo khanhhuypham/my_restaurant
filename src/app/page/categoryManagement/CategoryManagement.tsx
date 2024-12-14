@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Category } from "../../models/category/category";
 import { categoryService } from "../../services/category/categoryService";
-import { Button, Input, message, Modal, Space, Table, TableProps, Tag } from "antd";
+import { Button, Input, message, Modal, Space, Table, TableProps, Tabs, Tag } from "antd";
 import { CreateCategory } from "./CreateCategory";
 import { ContentOfModalConfirm } from "../../component/modal/ModalConfirm";
 import { containsDiacritics } from "../../utils/utils";
@@ -11,6 +11,8 @@ export const CategoryManagement = () => {
     const [fullData, setFullData] = useState<Category[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [dialog, setDialog] = useState<[open: boolean, content?: JSX.Element | undefined]>([false, undefined]);
+    const [active, setActive] = useState<boolean>(true);
+    
 
     const columns: TableProps<Category>['columns'] = [
         {
@@ -91,9 +93,6 @@ export const CategoryManagement = () => {
                     keySearch = keySearch.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
                 }
 
-                console.log(keySearch)
-                console.log(name)
-
                 return name.includes(keySearch);
             })
             setCategories(departmentsFilter)
@@ -102,7 +101,8 @@ export const CategoryManagement = () => {
 
     const fetchData = () => {
         categoryService.List().then((res) => {
-            setCategories(res.data);
+            console.log(res.data)
+            setCategories(res.data.filter((cate) => cate.active === active));
             setFullData(res.data)
         }).catch((error) => {
             console.log(error);
@@ -126,7 +126,7 @@ export const CategoryManagement = () => {
         let content = <ContentOfModalConfirm
             onClose={() => { setDialog([false]); }}
             onConfirm={() => {
-                categoryService.Update(data).then((res) => {
+                categoryService.Update({...data,active:false}).then((res) => {
 
                     if (res.status == 200) {
                         message.success("Change Status successfully")
@@ -153,7 +153,37 @@ export const CategoryManagement = () => {
 
 
     return (
-        <>
+        <div className="space-y-2">
+            <div>
+                <Tabs
+                    defaultActiveKey="-1"
+                    color="orange"
+                    items={
+                        [
+                            { text:"Active",value:true, badge:fullData.filter((data)=>data.active = true).length},
+                            { text:"InActive",value:false, badge:fullData.filter((data)=>data.active = false).length }
+                        ].map((element, i) => {
+                            return {
+                                key: element.value.toString(),
+                                label: (
+                                    <div className="space-x-2">
+                                        <span>{element.text}</span>
+                                        <span className='text-[11px] p-1 bg-slate-200 rounded-full'>
+                                            {element.badge}
+                                        </span>
+                                    </div>
+                                ),
+                            };
+                        })
+                    }
+
+                    onChange={(value) => {
+                        setActive(value.toLowerCase() === 'true')
+                        setCategories(fullData.filter((cate) => cate.active === active))
+                    }}
+                />
+            </div>
+
             <div className="flex space-x-2">
                 <Input placeholder="default size" className="w-48 " prefix={<i className="fa-solid fa-magnifying-glass" />} onChange={onSearch} />
                 <Button
@@ -175,7 +205,7 @@ export const CategoryManagement = () => {
             >
                 {dialog[1] ?? <></>}
             </Modal>
-        </>
+        </div>
     );
 };
 

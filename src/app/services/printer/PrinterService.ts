@@ -2,7 +2,6 @@
 
 
 import { BaseResponse } from "../../models/base-response"
-import { Department } from "../../models/department"
 import axiosClient from "../configURL"
 import { ItemEntity, ItemEntityPage } from "../../models/Item/Item"
 import { Pagination } from "../../models/pagination"

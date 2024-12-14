@@ -30,7 +30,7 @@ export const Order = () => {
     const [dialog, setDialog] = useState<[open: boolean, content?: JSX.Element | undefined]>([false, undefined]);
 
     const [parameter, setParameter] = useState({
-        pagination: { ...(new pageModel()), limit: 40, page: 1 },
+        pagination: { ...(new pageModel()), limit: 100, page: 1 },
         category_id: -1
     });
 
@@ -135,7 +135,7 @@ export const Order = () => {
                                             <Card
                                                 hoverable
                                                 className="w-[90%] drop-shadow-md"
-                                                cover={<img alt={item.name} src={item.imgSrc} />}
+                                                cover={<img alt={item.name} src={item.image} />}
                                                 styles={{
                                                     cover: {
                                                         borderBottom: `#A71316 6px solid`

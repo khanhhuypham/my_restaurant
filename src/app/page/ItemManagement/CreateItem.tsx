@@ -1,9 +1,7 @@
 
 
 import { useState, useEffect } from "react";
-import { departmentService } from "../../services/department/departmentService";
 
-import { Department } from "../../models/department";
 import { Button, Form, Input, InputNumber, message, Select, Space, Switch } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Category } from "../../models/category/category";

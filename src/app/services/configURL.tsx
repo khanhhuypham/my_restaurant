@@ -9,7 +9,7 @@ const axiosClient = (port: number | null = null): AxiosInstance => {
     const headers = {"Content-Type": "application/json"}
 
     const client = axios.create({
-        baseURL: "http://172.16.2.176:8080",
+        baseURL: "http://localhost:8080/api/v1",
         headers,
         timeout: 10000,
         withCredentials: false,

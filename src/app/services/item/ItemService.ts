@@ -1,16 +1,12 @@
 
 
-import { idText } from "typescript"
 import { BaseResponse } from "../../models/base-response"
-import { Department } from "../../models/department"
 import axiosClient from "../configURL"
-import { PersonnelList } from "../../models/personnel"
 import { ItemEntity, ItemEntityPage } from "../../models/Item/Item"
 import { Pagination } from "../../models/pagination"
 import { ChidlrenItem } from "../../models/Item/item-children"
 import { Unit } from "../../models/unit/unit"
-import { Children } from "react"
-import { Category } from "../../models/category/category"
+
 import { menuDataArray } from "../../assets/menuData"
 
 
@@ -39,10 +35,10 @@ export const ItemService = {
 
 
 
-    Detail: async (id:number) => {
-        const {data} = await axiosClient().get<BaseResponse<Department>>(`v1/departments/${id}/detail`)
-        return data
-    },
+    // Detail: async (id:number) => {
+    //     const {data} = await axiosClient().get<BaseResponse<Department>>(`v1/departments/${id}/detail`)
+    //     return data
+    // },
 
    
   
@@ -85,7 +81,7 @@ export const ItemService = {
 const mappImage = (items:ItemEntity[]):ItemEntity[] => {
     
     return items.map((item,index) =>{
-        return {...item,imgSrc:menuDataArray.at(index)?.imgSrc ?? "",quantity:1}
+        return {...item,image:menuDataArray.at(index)?.imgSrc ?? "",quantity:1}
     })
 
 }

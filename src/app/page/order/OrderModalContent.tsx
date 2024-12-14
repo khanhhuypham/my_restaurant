@@ -97,7 +97,7 @@ export const OrderModalContent = ({
                 <img
                     className="w-[100%] h-[175px] overflow-hidden border-b-4 border-[#A71316] object-cover rounded-t-lg"
                     alt={""}
-                    src={item.imgSrc}
+                    src={item.image}
                 />
             </div>
 

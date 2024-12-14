@@ -2,7 +2,7 @@
 export class Category {
     id: number = 0;
     name: string = "";
-    status: number = 0;
+    active: boolean = false;
     description: string = "";
   
     constructor(data?: Partial<Category>) {

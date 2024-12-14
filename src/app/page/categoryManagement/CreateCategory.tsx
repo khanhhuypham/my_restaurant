@@ -1,9 +1,7 @@
 
 
 import { useState, useEffect } from "react";
-import { departmentService } from "../../services/department/departmentService";
 
-import { Department } from "../../models/department";
 import { Button, Form, Input, message, Select, Space, Switch } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Category } from "../../models/category/category";
@@ -28,7 +26,8 @@ export const CreateCategory = ({
     const [form] = Form.useForm();
 
     const onFinish = (values: any) => {
-
+        
+        console.log(data)
         if (data.id == 0) {
             categoryService.Create(data).then((res) => {
                 if (res.status == 200) {
@@ -66,12 +65,12 @@ export const CreateCategory = ({
 
         form.setFieldsValue({
             name: category.name,
-            status: category.status,
+            active: category.active,
             description: category.description
         });
 
         console.log(category)
-        console.log(form.getFieldValue("status"))
+        console.log(form.getFieldValue("active"))
 
         setData(category)
 
@@ -105,8 +104,10 @@ export const CreateCategory = ({
                     />
                 </Form.Item>
 
-                <Form.Item label="Status" name="status" valuePropName="checked">
-                    <Switch />
+                <Form.Item label="Status" name="active">
+                    <Switch  onChange={(checked: boolean) => {
+                         setData({ ...data, active: checked })
+                    }}/>
                 </Form.Item>
 
                 <Form.Item name="description" label="Description" className="mb-10">

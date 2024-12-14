@@ -4,7 +4,7 @@ import { ChidlrenItem } from "./item-children";
 
 export class ItemEntity {
     id: number = 0;
-    imgSrc: string = "";
+    image: string = "";
     name: string = "";
     description: string = "";
     price: number = 0;
