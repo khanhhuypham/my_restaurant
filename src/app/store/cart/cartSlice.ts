@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { ItemEntity } from "../../models/Item/item";
-
+import { ItemEntity } from "../../models/item/item";
 
 export interface ICartState {
     items: ItemEntity[];

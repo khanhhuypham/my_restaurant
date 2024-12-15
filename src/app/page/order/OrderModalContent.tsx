@@ -6,7 +6,7 @@ import { useMediaQuery } from 'react-responsive';
 import { CustomOption, MenuItem } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { cartSelector, addItem } from '../../store/cart/cartSlice';
-import { ItemEntity } from '../../models/Item/item';
+import { ItemEntity } from '../../models/item/item';
 import { validateHeaderName } from 'http';
 
 const { TextArea } = Input;

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { MenuItem } from "../../../types";
 import { addItem, cartSelector, removeItemFromCart } from "../../store/cart/cartSlice";
 import { PhoneFilled, EnvironmentFilled } from "@ant-design/icons";
-import { ItemEntity } from "../../models/Item/item";
+import { ItemEntity } from "../../models/item/item";
 import TextArea from "antd/es/input/TextArea";
 import { QuantityBtnGroup } from "../../component/Button/ButtonGroup";
 import { CalendarBtn } from "../../component/Button/CalendarBtn";

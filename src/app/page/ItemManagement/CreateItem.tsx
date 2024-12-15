@@ -6,10 +6,10 @@ import { Button, Checkbox, Form, Input, InputNumber, message, Select, Space, Swi
 import TextArea from "antd/es/input/TextArea";
 import { Category } from "../../models/category/category";
 import { categoryService } from "../../services/category/categoryService";
-import { ItemEntity } from "../../models/Item/item";
+import { ItemEntity } from "../../models/item/item";
 import { ItemService } from "../../services/item/ItemService";
 import { Unit } from "../../models/unit/unit";
-import { ChidlrenItem } from "../../models/Item/item-children";
+import { ChidlrenItem } from "../../models/item/item-children";
 import { Printer } from "../../models/printer/printer";
 import { printerService } from "../../services/printer/PrinterService";
 import { CheckboxChangeEvent } from "antd/es/checkbox";

@@ -3,7 +3,7 @@
 
 import { BaseResponse } from "../../models/base-response"
 import axiosClient from "../configURL"
-import { ItemEntity } from "../../models/Item/item"
+import { ItemEntity } from "../../models/item/item"
 import { Printer } from "../../models/printer/printer"
 import { CheckoutForm } from "../../models/payment/checkout-form"
 import { StripeCheckoutResponse } from "../../models/payment/stripe-checkout-response"

@@ -13,7 +13,7 @@ import { removeItemFromCart } from "../../store/cart/cartSlice";
 import { useAppDispatch } from "../../hooks/useRedux";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_LINK } from "../../routes/route-link";
-import { ItemEntity } from "../../models/Item/item";
+import { ItemEntity } from "../../models/item/item";
 
 
 export const BagDrawer = (

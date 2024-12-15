@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Anchor, Button, Card, message, Modal, Space, Typography } from "antd";
 import { CloseCircleOutlined } from '@ant-design/icons';
-import { ItemEntity, ItemEntityPage } from "../../models/Item/item";
+import { ItemEntity, ItemEntityPage } from "../../models/item/item";
 import { menuDataArray } from "../../assets/menuData";
 import { MenuItem } from "../../../types";
 import lineImg from '../../assets/images/line.png';

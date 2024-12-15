@@ -3,9 +3,9 @@
 
 import { BaseResponse } from "../../models/base-response"
 import axiosClient from "../configURL"
-import { ItemEntity, ItemEntityPage } from "../../models/Item/item"
+import { ItemEntity, ItemEntityPage } from "../../models/item/item"
 import { Pagination } from "../../models/pagination"
-import { ChidlrenItem } from "../../models/Item/item-children"
+import { ChidlrenItem } from "../../models/item/item-children"
 import { Unit } from "../../models/unit/unit"
 import { Printer } from "../../models/printer/printer"
 

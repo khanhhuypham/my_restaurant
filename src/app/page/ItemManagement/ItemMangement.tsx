@@ -5,11 +5,11 @@ import { Button, Input, message, Modal, Pagination, PaginationProps, Select, Tab
 import { ContentOfModalConfirm } from "../../component/modal/ModalConfirm";
 import { useDebounce } from "../../utils/utils";
 import { ColumnsType, TableProps } from "antd/es/table";
-import { ItemEntity, ItemEntityPage } from "../../models/Item/item";
+import { ItemEntity, ItemEntityPage } from "../../models/item/item";
 import { ItemService } from "../../services/item/ItemService";
 import { CreateItem } from "./CreateItem";
 
-import { ChidlrenItem } from "../../models/Item/item-children";
+import { ChidlrenItem } from "../../models/item/item-children";
 import { categoryService } from "../../services/category/categoryService";
 import { Category } from "../../models/category/category";
 
