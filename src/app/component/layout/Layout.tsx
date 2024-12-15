@@ -18,9 +18,9 @@ import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { BagDrawer } from "../BagDrawer/BagDrawer";
 import { cartSelector } from "../../store/cart/cartSlice";
 import logo from "../../assets/images/logo-light.png";
-// import logo from "../assets/images/logo-light.png";
 
-const { Header, Content, Footer, Sider } = Layout;
+
+const { Header, Content, Footer } = Layout;
 
 
 const items = [
@@ -71,7 +71,7 @@ const items = [
 
 export const CustomLayout: React.FC = () => {
 
-    const dispatch = useAppDispatch();
+
     const cardSlice = useAppSelector(cartSelector);
     const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
@@ -134,9 +134,11 @@ export const CustomLayout: React.FC = () => {
             </Content>
 
             <BagDrawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} input={cardSlice.items}/>
+            
             <Footer style={{ textAlign: 'center' }}>
                 Ant Design ©{new Date().getFullYear()} Created by Ant UED
             </Footer>
+            
         </Layout>
     );
 };

@@ -9,10 +9,11 @@ const axiosClient = (port: number | null = null): AxiosInstance => {
     const headers = {"Content-Type": "application/json"}
 
     const client = axios.create({
-        baseURL: "http://localhost:8080/api/v1",
+        baseURL: "http://127.0.0.1:8080/api/v1/",
         headers,
         timeout: 10000,
         withCredentials: false,
+        responseType:"json"
     });
 
     client.interceptors.request.use((config: any) => {
@@ -20,6 +21,7 @@ const axiosClient = (port: number | null = null): AxiosInstance => {
       
         config.headers = config.headers || {};
         if (token) {
+            
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;

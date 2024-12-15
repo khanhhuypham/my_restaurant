@@ -2,7 +2,7 @@
 
 import { BaseResponse } from "../../models/base-response"
 import axiosClient from "../configURL"
-import { ItemEntity, ItemEntityPage } from "../../models/Item/Item"
+import { ItemEntity, ItemEntityPage } from "../../models/Item/item"
 import { Pagination } from "../../models/pagination"
 import { ChidlrenItem } from "../../models/Item/item-children"
 import { Unit } from "../../models/unit/unit"
@@ -44,14 +44,15 @@ export const ItemService = {
   
     Update: async (item:ItemEntity) => {
         console.log(item.description)
-        const {data} = await axiosClient().patch<BaseResponse<undefined>>(`item/${item.id}`,{
+        const {data} = await axiosClient().put<BaseResponse<undefined>>(`item/${item.id}`,{
             name:item.name,
             price:item.price,
             children:item.children.map((child) =>({id:child.id, quantity:0})),
-            unit_id:item.unit?.id,
+            unit_id:item.unit_id,
             printer_id:item.printer_id,
             category_id:item.category_id,
             out_of_stock: item.out_of_stock,
+            sell_by_weight:item.sell_by_weight,
             description:item.description
         })
         return data
@@ -62,10 +63,11 @@ export const ItemService = {
             name:item.name,
             price:item.price,
             children:item.children.map((child) =>({id:child.id, quantity:0})),
-            unit_id:item.unit?.id,
+            unit_id:item.unit_id,
             printer_id:item.printer_id,
             category_id:item.category_id,
             out_of_stock:item.out_of_stock,
+            sell_by_weight:item.sell_by_weight,
             description:item.description
         })
         return data

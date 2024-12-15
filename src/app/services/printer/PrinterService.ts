@@ -3,11 +3,11 @@
 
 import { BaseResponse } from "../../models/base-response"
 import axiosClient from "../configURL"
-import { ItemEntity, ItemEntityPage } from "../../models/Item/Item"
+import { ItemEntity, ItemEntityPage } from "../../models/Item/item"
 import { Pagination } from "../../models/pagination"
 import { ChidlrenItem } from "../../models/Item/item-children"
 import { Unit } from "../../models/unit/unit"
-import { Printer } from "../../models/printer/Printer"
+import { Printer } from "../../models/printer/printer"
 
 
 export const printerService = {

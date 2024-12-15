@@ -5,7 +5,7 @@ import { Button, Input, message, Modal, Pagination, PaginationProps, Select, Tab
 import { ContentOfModalConfirm } from "../../component/modal/ModalConfirm";
 import { useDebounce } from "../../utils/utils";
 import { ColumnsType, TableProps } from "antd/es/table";
-import { ItemEntity, ItemEntityPage } from "../../models/Item/Item";
+import { ItemEntity, ItemEntityPage } from "../../models/Item/item";
 import { ItemService } from "../../services/item/ItemService";
 import { CreateItem } from "./CreateItem";
 
@@ -59,22 +59,16 @@ export const ItemManagement = () => {
 
         {
             title: 'Unit',
-            dataIndex: 'unit',
-            key: 'unit',
-            render: (i, row) => {
-
-                return <span className="">{row.unit?.name ?? ""}</span>
-            }
+            dataIndex: 'unit_type',
+            key: 'unit_type',
         },
 
-        // {
-        //     title: 'Category',
-        //     dataIndex: 'category',
-        //     key: 'category',
-        //     render: (i, { category }) => {
-        //         return <span className="">{category?.name ?? ""}</span>
-        //     }
-        // },
+        {
+            title: 'Category',
+            dataIndex: 'category_name',
+            key: 'category_name',
+         
+        },
 
         {
             title: 'Created at',
@@ -151,9 +145,9 @@ export const ItemManagement = () => {
         ItemService.List(parameter).then((res) => {
 
             setLoading(false);
-            console.log(res)
+
             if (res.status == 200) {
-            
+                console.log(res.data)
                 setData(res.data);
             } else {
                 message.error(res.message)

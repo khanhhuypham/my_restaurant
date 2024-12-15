@@ -1,5 +1,4 @@
-import { Category } from "../category/category";
-import { Unit } from "../unit/unit";
+
 import { ChidlrenItem } from "./item-children";
 
 export class ItemEntity {
@@ -8,10 +7,13 @@ export class ItemEntity {
     name: string = "";
     description: string = "";
     price: number = 0;
-    unit: Unit | undefined ;
+    unit_id: number = 0 ;
+    unit_type: string = "";
     category_id:number = 0;
+    category_name: string = "";
     children: ChidlrenItem[] = [];
     out_of_stock: boolean = false;
+    sell_by_weight:boolean = false;
     printer_id: number | undefined;
     quantity: number = 0;
     note: string | undefined ;

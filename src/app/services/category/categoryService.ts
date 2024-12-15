@@ -9,8 +9,13 @@ export const categoryService = {
     version: "v1",
 
     List: async () => {
-        const { data } = await axiosClient().get<BaseResponse<Category[]>>("category")
-        return data
+        const response = await axiosClient().get<BaseResponse<Category[]>>("category",{
+           
+        })
+
+    console.log('Raw Data:', response.data.data);
+        
+        return response.data
     },
 
 

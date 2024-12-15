@@ -13,7 +13,7 @@ import { removeItemFromCart } from "../../store/cart/cartSlice";
 import { useAppDispatch } from "../../hooks/useRedux";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_LINK } from "../../routes/route-link";
-import { ItemEntity } from "../../models/Item/Item";
+import { ItemEntity } from "../../models/Item/item";
 
 
 export const BagDrawer = (
@@ -94,6 +94,7 @@ export const BagDrawer = (
                     type="primary"
                     size="large"
                     onClick={() => {
+                        setOpenDrawer(false)
                         navigate(ROUTE_LINK.PAYMENT)
                     }}
                 >

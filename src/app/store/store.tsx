@@ -3,6 +3,7 @@ import { userDataSlice } from "./userDataSlice";
 import { notificationSlice } from "./notification/notificationSlice";
 import { sidebarSlice } from "./sideBar/sidebarSlice";
 import { cartSlice } from "./cart/cartSlice";
+import { layoutSlice } from "./layout/layoutSlice";
 
 
 
@@ -12,6 +13,7 @@ export const store = configureStore({
         notification: notificationSlice.reducer,
         sidebar: sidebarSlice.reducer,
         cart: cartSlice.reducer,
+        layout: layoutSlice.reducer,
     },
 });
 

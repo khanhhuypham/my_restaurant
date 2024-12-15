@@ -101,7 +101,7 @@ export const CategoryManagement = () => {
 
     const fetchData = () => {
         categoryService.List().then((res) => {
-            console.log(res.data)
+            console.log('huy: ',res)
             setCategories(res.data.filter((cate) => cate.active === active));
             setFullData(res.data)
         }).catch((error) => {

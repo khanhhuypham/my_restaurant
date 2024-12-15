@@ -1,14 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { MenuItem } from "../../../types";
-import { stat } from "fs";
-import { ItemEntity } from "../../models/Item/Item";
-
-
+import { ItemEntity } from "../../models/Item/item";
 
 
 export interface ICartState {
     items: ItemEntity[];
+    charge?: (() => void)
 }
 
 const initialState: ICartState = {
@@ -41,11 +38,18 @@ export const cartSlice = createSlice({
 
         },
 
+        mountChargeMethod: (state: ICartState, action: PayloadAction<(() => void)>) => {
 
-           
-    
+            state.charge = action.payload
+        },
+
+        charge: (state: ICartState) => {
+            {state.charge && state.charge()}
+        },
+
+
     },
 });
 
-export const {addItem,removeItemFromCart} = cartSlice.actions;
+export const {addItem,removeItemFromCart,charge,mountChargeMethod} = cartSlice.actions;
 export const cartSelector = (state: RootState) => state.cart;

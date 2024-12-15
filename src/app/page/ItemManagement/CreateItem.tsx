@@ -2,21 +2,19 @@
 
 import { useState, useEffect } from "react";
 
-import { Button, Form, Input, InputNumber, message, Select, Space, Switch } from "antd";
+import { Button, Checkbox, Form, Input, InputNumber, message, Select, Space, Switch } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Category } from "../../models/category/category";
 import { categoryService } from "../../services/category/categoryService";
-import { ItemEntity } from "../../models/Item/Item";
+import { ItemEntity } from "../../models/Item/item";
 import { ItemService } from "../../services/item/ItemService";
 import { Unit } from "../../models/unit/unit";
 import { ChidlrenItem } from "../../models/Item/item-children";
-import { time } from "console";
-import { Printer } from "../../models/printer/Printer";
+import { Printer } from "../../models/printer/printer";
 import { printerService } from "../../services/printer/PrinterService";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 const { Option } = Select;
-
-
 
 
 export const CreateItem = ({
@@ -42,7 +40,7 @@ export const CreateItem = ({
 
         if (data.id == 0) {
             ItemService.Create(data).then((res) => {
-                
+
                 if (res.status == 201) {
                     message.success("Create successfully")
                     { onConfirm && onConfirm() }
@@ -121,16 +119,17 @@ export const CreateItem = ({
     useEffect(() => {
         form.resetFields()
 
+
         form.setFieldsValue({
             name: item.name,
-            price: item.id > 0 ? item.price : undefined,    
+            price: item.id > 0 ? item.price : undefined,
             children: item.children.map((child) => child.id),
+            sell_by_weight:item.sell_by_weight,
             category: item.category_id,
             printer: item.printer_id,
-            unit: item.unit?.id,
+            unit: item.unit_id,
             description: item.description
         });
-
 
         setData(item)
 
@@ -174,49 +173,57 @@ export const CreateItem = ({
                         // { min:1.0, message:"price must be greater than 1$"},
                     ]}
                 >
-                    <InputNumber style={{ width: '100%' }}  placeholder=" Please enter price..."
-                        onChange={(value:number|null) => {
-                            if (value !== null){
-                              setData({ ...data, price: Number(value) })
+                    <InputNumber style={{ width: '100%' }} placeholder=" Please enter price..."
+                        onChange={(value: number | null) => {
+                            if (value !== null) {
+                                setData({ ...data, price: Number(value) })
                             }
                         }}
-                    
+
                     />
+                </Form.Item>
+
+                <Form.Item name="sell_by_weight" valuePropName="checked" label={null}>
+                    <Checkbox onChange={(value) => {
+                        setData({ ...data, sell_by_weight: value.target.checked })
+                    }}>
+                        sell by weight
+                    </Checkbox>
                 </Form.Item>
 
                 <div className="grid grid-cols-2 gap-x-4 flex items-center">
 
                     <Form.Item name="children" label="Children Item" className="mb-3">
-                       
-                        <Select 
-                            placeholder="Select a option" 
+
+                        <Select
+                            placeholder="Select a option"
                             mode="multiple"
-                            options={children.map((child) =>({
+                            options={children.map((child) => ({
                                 label: child.name,
                                 value: child.id
                             }))}
 
-                            onChange={(value:number[]) => {
-                                let list = children.filter((child) =>{
+                            onChange={(value: number[]) => {
+                                let list = children.filter((child) => {
                                     return value.includes(child.id)
                                 })
-                                setData({ ...data, children:list })
+                                setData({ ...data, children: list })
                             }}
                         />
                     </Form.Item>
 
                     <Form.Item name="category" label="Category" rules={[{ required: true }]} className="mb-3">
-                        <Select 
-                            placeholder="Please Select a category" 
-                            options={categories.map((cate) =>({
+                        <Select
+                            placeholder="Please Select a category"
+                            options={categories.map((cate) => ({
                                 label: cate.name,
                                 value: cate.id
                             }))}
-                            onChange={(value:number) => {
+                            onChange={(value: number) => {
                                 setData({ ...data, category_id: categories.find((cate) => cate.id == value)?.id ?? 0 })
                             }}
                         />
-                           
+
                     </Form.Item>
                 </div>
 
@@ -224,31 +231,31 @@ export const CreateItem = ({
 
                     <Form.Item name="printer" label="Printer" className="mb-3">
 
-                    <Select 
+                        <Select
                             allowClear
-                            placeholder="Please select a printer" 
-                            options={printers.map((printer) =>({
+                            placeholder="Please select a printer"
+                            options={printers.map((printer) => ({
                                 label: printer.name,
                                 value: printer.id
                             }))}
-                            onChange={(value:number) => {
-                                setData({ ...data, printer_id:printers.find((printer) => printer.id == value)?.id ?? undefined})
+                            onChange={(value: number) => {
+                                setData({ ...data, printer_id: printers.find((printer) => printer.id == value)?.id ?? 0 })
                             }}
                         />
-    
+
                     </Form.Item>
 
                     <Form.Item name="unit" label="Unit" className="mb-3">
-                  
-                        <Select 
-                            placeholder="please select a unit" 
-                            allowClear 
-                            options={units.map((unit) =>({
+
+                        <Select
+                            placeholder="please select a unit"
+                            allowClear
+                            options={units.map((unit) => ({
                                 label: unit.name,
                                 value: unit.id
                             }))}
-                            onChange={(value:number) => {
-                                setData({ ...data, unit: units.find((cate) => cate.id == value) })
+                            onChange={(value: number) => {
+                                setData({ ...data, unit_id: units.find((unit) => unit.id == value)?.id ?? 0 })
                             }}
                         />
                     </Form.Item>

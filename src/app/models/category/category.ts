@@ -5,7 +5,8 @@ export class Category {
     active: boolean = false;
     description: string = "";
   
-    constructor(data?: Partial<Category>) {
-        Object.assign(this, data);
-    }
+    constructor(initialValues: Partial<Category> = {}) {
+        Object.assign(this, initialValues);
+      }
+    
 }
