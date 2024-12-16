@@ -15,6 +15,7 @@ import { Category } from "../../models/category/category";
 import { Pagination as pageModel } from '../../models/pagination';
 import { ItemService } from "../../services/item/ItemService";
 import { QuantityBtnGroup } from "../../component/Button/ButtonGroup";
+import { OrderCard } from "./OrderCard";
 
 interface navItem {
     key: number;
@@ -113,7 +114,7 @@ export const Order = () => {
                 <div className="space-y-16">
                     {categories.map((cate) => {
                         return (
-                            <div id={cate.key.toString()} key={cate.key} className="space-y-10">
+                            <div key={cate.key} className="space-y-10">
 
                                 <div className="space-y-2">
                                     <h1 className="text-center font-bold text-3xl">
@@ -128,82 +129,19 @@ export const Order = () => {
                                 </div>
 
                                 <div className="grid grid-cols-4 gap-x-0 gap-y-8 justify-items-center">
-
-                                    {data.list.filter((item: ItemEntity) => item.category_id === cate.key).map((item: ItemEntity) => {
-
-                                        return (
-                                            <Card
-                                                hoverable
-                                                className="w-[90%] drop-shadow-md"
-                                                cover={<img alt={item.name} src={item.image} />}
-                                                styles={{
-                                                    cover: {
-                                                        borderBottom: `#A71316 6px solid`
-                                                    },
-                                                    body: {
-                                                        padding: "12px 15px"
-                                                    }
-                                                }}
-                                                onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-                                                    showModalCreate(item)
-                                                }}
-                                            >
-                                                <div className="space-y-2">
-
-                                                    <h1 className="text-xl font-semibold">{item.name}</h1>
-                                                    <p className="font-medium">
-                                                        {"$" + item.price}
-                                                    </p>
-                                                    <div className="h-full flex justify-between items-end space-x-3">
-
-                                                        <div>
-                                                            {
-                                                                isItemExistingInStore(item) &&
-                                                                <div>
-                                                                    <QuantityBtnGroup quantity={1} closure={(value:number)=>{
-                                                                        dispatch(addItem({...item,quantity:value}))
-                                                                    }}/>
-                                                                </div>
-                                                            }
-                                                        </div>
-
-                                                        <div>
-
-                                                            {
-                                                                !isItemExistingInStore(item) &&
-                                                                <Button type="text" color="default" variant="filled" onClick={(e) => {
-                                                                    e.stopPropagation()
-                                                                    e.preventDefault()
-                                                                    dispatch(addItem({...item,quantity:1}))
-                                                                }}>
-                                                                    <i className="fa-solid fa-cart-arrow-down"></i>
-                                                                </Button>
-                                                            }
-
-
-                                                            {
-                                                                isItemExistingInStore(item) &&
-                                                                <Button type="text" color="danger" variant="filled" onClick={(e) => {
-                                                                    e.stopPropagation()
-                                                                    e.preventDefault()
-                                                                    dispatch(removeItemFromCart(item))
-                                                                }}>
-                                                                    <i className="fa-solid fa-thumbtack-slash"></i>
-                                                                </Button>
-                                                            }
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </Card>
+                                    {data.list
+                                    .filter((item: ItemEntity) => item.category_id === cate.key)
+                                    .map((item: ItemEntity) => {
+                                        return   (
+                                            <OrderCard
+                                                key={item.id}
+                                                item={item} 
+                                                onClick={() => showModalCreate(item)}
+                                            />
                                         )
                                     })}
                                 </div>
-
-                            </div>
+                            </div>  
                         );
                     })}
                 </div>

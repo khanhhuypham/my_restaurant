@@ -10,9 +10,9 @@ import { ItemEntity } from "../../models/item/item";
 import { ItemService } from "../../services/item/ItemService";
 import { Unit } from "../../models/unit/unit";
 import { ChidlrenItem } from "../../models/item/item-children";
-import { Printer } from "../../models/printer/printer";
 import { printerService } from "../../services/printer/PrinterService";
-import { CheckboxChangeEvent } from "antd/es/checkbox";
+import { Printer } from "../../models/printer/printer";
+
 
 const { Option } = Select;
 
