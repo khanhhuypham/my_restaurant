@@ -8,10 +8,14 @@ import { Category } from "../../models/category/category";
 import { categoryService } from "../../services/category/categoryService";
 import { User } from "../../models/user/user";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
-import { cartSelector, mountChargeMethod } from "../../store/cart/cartSlice";
+import { addStripeSecretKey, cartSelector, mountChargeMethod } from "../../store/cart/cartSlice";
 import { paymentService } from "../../services/payment/PaymentService";
 import { CheckoutForm, ItemOfCheckoutForm } from "../../models/payment/checkout-form";
-import { ProductOfCheckoutForm } from "./ProductOfCheckoutForm";
+
+import { useNavigate } from "react-router-dom";
+import { ROUTE_LINK } from "../../routes/route-link";
+import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
+import {loadStripe, Stripe} from '@stripe/stripe-js';
 
 
 const { Option } = Select;
@@ -24,38 +28,55 @@ export const CheckoutFormComponent = ({
     onConfirm?: () => void;
     onClose?: () => void;
 }) => {
-
-    // const [data, setData] = useState<User>(new User());
+    
+    const navigate = useNavigate();
     const [form] = Form.useForm();
     const dispatch = useAppDispatch();
     const cartSlice = useAppSelector(cartSelector);
 
-
-
+  
     const onFinish = (value: CheckoutForm) => {
 
         let items = cartSlice.items.map((item) => {
             return {
                 name: item.name,
                 quantity: item.quantity,
-                amount: item.price*100,
-                currency:value.currency
+                amount: item.price * 100,
+                currency: value.currency
             }
         })
 
-    
-        const checkoutForm:CheckoutForm = {
+
+        const checkoutForm: CheckoutForm = {
             ...value,
-            successUrl:"http://localhost:3000",
-            cancelUrl:"http://localhost:3000",
-            items:items
+            email: "khanhhuypham.1110@gmail.com",
+            name: "Phạm Khánh huy",
+            successUrl: "http://localhost:3000",
+            cancelUrl: "http://localhost:3000",
+            items: items
         }
-        
+
+
+        // paymentService.HostCheckout(checkoutForm).then((res) => {
+
+        //     if (res.status == 200) {
+       
+        //         dispatch(addStripeSecretKey(res.data))
+        //         navigate(ROUTE_LINK.STRIPE_CHECKOUT_FORM)
+              
+        //     } else {
+        //         message.error(res.message)
+        //     }
+
+        // }).catch((error) => {
+        //     console.log(error);
+        // });
+
         paymentService.StripeHostedCheckout(checkoutForm).then((res) => {
-            
+
             if (res.status == 200) {
                 console.log(res.data)
-                window.location.href= res.data.sessionUrl
+                // window.location.href= res.data.sessionUrl
             } else {
                 message.error(res.message)
             }
@@ -86,12 +107,12 @@ export const CheckoutFormComponent = ({
         form.resetFields()
         form.setFieldsValue({
             name: "phạm khánh huy",
-            email:"khanhhuypham.1110@gmail.com",
-            phone:"0941695140",
-            currency:"USD",
+            email: "khanhhuypham.1110@gmail.com",
+            phone: "0941695140",
+            currency: "USD",
             description: ""
         });
-       
+
     }, [user]);
 
     return (
@@ -126,7 +147,7 @@ export const CheckoutFormComponent = ({
                     ]}
                     className="mb-3"
                 >
-                    <Input placeholder="Enter..."/>
+                    <Input placeholder="Enter..." />
                 </Form.Item>
 
                 <Form.Item
@@ -152,10 +173,12 @@ export const CheckoutFormComponent = ({
 
 
                 <Form.Item name="description" label="Description" className="mb-10">
-                    <TextArea rows={3} placeholder="Description...."/>
+                    <TextArea rows={3} placeholder="Description...." />
                 </Form.Item>
 
             </Form>
+
+
         </div>
     );
 };

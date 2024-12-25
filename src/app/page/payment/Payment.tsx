@@ -30,6 +30,8 @@ export const Payment = () => {
                 <CheckoutFormComponent user={new User()} />
                 <ProductOfCheckoutForm />
             </div>
+
+
         </div>
     );
 };

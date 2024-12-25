@@ -5,7 +5,8 @@ import { ItemEntity } from "../../models/item/item";
 
 export interface ICartState {
     items: ItemEntity[];
-    charge?: (() => void)
+    charge?: (() => void);
+    stripeScretkey?: string
 }
 
 const initialState: ICartState = {
@@ -48,8 +49,14 @@ export const cartSlice = createSlice({
         },
 
 
+
+        addStripeSecretKey: (state: ICartState,action: PayloadAction<string>) => {
+            state.stripeScretkey = action.payload
+        },
+
+
     },
 });
 
-export const {addItem,removeItemFromCart,charge,mountChargeMethod} = cartSlice.actions;
+export const {addItem,removeItemFromCart,charge,mountChargeMethod,addStripeSecretKey} = cartSlice.actions;
 export const cartSelector = (state: RootState) => state.cart;

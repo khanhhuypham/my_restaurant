@@ -85,18 +85,18 @@ export const Order = () => {
             console.log(error)
         })
 
-        ItemService.List(parameter).then((res) => {
+        // ItemService.List(parameter).then((res) => {
           
-            if (res.status == 200) {
-                setData(res.data);
-                console.log(data.list)
-            } else {
-                message.error(res.message)
-            }
+        //     if (res.status == 200) {
+        //         setData(res.data);
+        //         console.log(data.list)
+        //     } else {
+        //         message.error(res.message)
+        //     }
 
-        }).catch((error) => {
-            console.log(error);
-        });
+        // }).catch((error) => {
+        //     console.log(error);
+        // });
 
     }, []);
 

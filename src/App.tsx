@@ -13,6 +13,8 @@ import { Payment } from "./app/page/payment/Payment";
 import { CategoryManagement } from "./app/page/categoryManagement/CategoryManagement";
 import { ItemManagement } from "./app/page/ItemManagement/ItemMangement";
 import { ChargeMethod } from "./app/page/chargeMethod/ChargeMethod";
+import { StripeCheckoutResponse } from "./app/models/payment/stripe-checkout-response";
+import { StripeCheckoutForm } from "./app/page/payment/stripe/stripe-checkout-form";
 
 
 
@@ -31,6 +33,7 @@ function App() {
                     <Route path={ROUTE_LINK.CATEGORY_MANAGEMENT} element={<CategoryManagement/>} />
                     <Route path={ROUTE_LINK.ITEM_MANAGEMENT} element={<ItemManagement/>} />
                     <Route path={ROUTE_LINK.CHARGE_METHOD} element={<ChargeMethod/>} />
+                    <Route path={ROUTE_LINK.STRIPE_CHECKOUT_FORM} element={<StripeCheckoutForm/>} />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -10,11 +10,12 @@ export const ROUTE_LINK = {
     CHAT: '/chat',
     PROFILE: '/profile',
     //============================================================
-    CATEGORY_MANAGEMENT:"/category_management",
+    CATEGORY_MANAGEMENT:"/category-management",
 
     //============================================================
-    ITEM_MANAGEMENT:"/item_management",
+    ITEM_MANAGEMENT:"/item-management",
 
 
-    CHARGE_METHOD:"/charge_method",
+    CHARGE_METHOD:"/charge-method",
+    STRIPE_CHECKOUT_FORM:"/stripe-checkout-form",
 }

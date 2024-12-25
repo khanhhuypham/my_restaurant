@@ -3,9 +3,8 @@
 
 import { BaseResponse } from "../../models/base-response"
 import axiosClient from "../configURL"
-import { ItemEntity, ItemEntityPage } from "../../models/item/item"
+import { ItemEntity } from "../../models/item/item"
 import { Printer } from "../../models/printer/printer"
-
 
 
 export const printerService = {

@@ -18,3 +18,5 @@ export const reportFilter: {value:number,label:string}[] = [
     { value: 9, label: "3 Năm gần nhất" },
     { value: 10, label: "Tất cả" },
 ];
+
+export const pageSize = [10,20,50,100]

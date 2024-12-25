@@ -8,13 +8,20 @@ import { ChidlrenItem } from "../../models/item/item-children"
 import { Unit } from "../../models/unit/unit"
 
 import { menuDataArray } from "../../assets/menuData"
-
+import { ItemListProps } from "../../page/ItemManagement/ItemMangement"
 
 export const ItemService = {
 	
-    List: async ({pagination,category_id}:{pagination:Pagination;category_id:number}) => {
+    List: async (param:ItemListProps) => {
         const {data} = await axiosClient().get<BaseResponse<ItemEntityPage>>(`item`,{
-            params: {...pagination,category_id},
+            params: {
+                category_type:param.category_type,
+                category_id:param.category_id,
+                out_of_stock:false,
+                search_key:param.search_key,
+                page:param.page,
+                limit:param.limit,
+            },
         })
 
         let result = {...data.data,list:mappImage( data.data.list)}

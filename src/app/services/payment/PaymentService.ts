@@ -10,12 +10,8 @@ import { StripeCheckoutResponse } from "../../models/payment/stripe-checkout-res
 
 export const paymentService = {
 
-    Charge: async () => {
-        const { data } = await axiosClient().post<BaseResponse<undefined>>(`checkout`, {
-            name:"",
-            email:"",
-            items:[]
-        })
+    HostCheckout: async (value:CheckoutForm) => {
+        const { data } = await axiosClient().post<BaseResponse<string>>(`host-checkout`,value)
         return data
     },
 

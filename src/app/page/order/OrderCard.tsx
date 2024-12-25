@@ -25,20 +25,20 @@ export const OrderCard = ({item,onClick}:
                     borderBottom: `#A71316 6px solid`
                 },
                 body: {
-                    padding: "12px 15px"
+                    padding: "12px 15px",
+                    // height: "100%"
                 }
             }}
             onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                 {onClick && onClick()}
             }}
         >
-            <div className="space-y-2">
-
+            <div className="space-y-2 h-full">
                 <h1 className="text-xl font-semibold">{item.name}</h1>
                 <p className="font-medium">
                     {"$" + item.price}
                 </p>
-                <div className="h-full flex justify-between items-end space-x-3">
+                <div className="flex justify-between items-end space-x-3">
 
                     <div>
                         {
