@@ -43,6 +43,10 @@ button.bag-button:hover {
 .ant-menu-light.ant-menu-horizontal >.ant-menu-item-selected::before:hover{
     border-bottom-color: #A71316;
 }
+
+/* .ant-tabs-bottom >div>.ant-tabs-nav{
+    margin-bottom: 0;
+} */
 /* 
 a:hover{
     color: #A71316;

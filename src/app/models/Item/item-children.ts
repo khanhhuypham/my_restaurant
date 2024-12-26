@@ -7,11 +7,9 @@ export class ChidlrenItem {
     name: string = "";
     description: string = "";
     price: number = 0;
-
     unit: Unit | undefined ;
-
     category: Category | undefined;
-
+    quantity:number = 0
 
 
     constructor(data?: Partial<ChidlrenItem>) {

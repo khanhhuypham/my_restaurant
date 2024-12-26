@@ -50,15 +50,15 @@ export const ItemService = {
    
   
     Update: async (item:ItemEntity) => {
-        console.log(item.description)
+       
         const {data} = await axiosClient().put<BaseResponse<undefined>>(`item/${item.id}`,{
             name:item.name,
             price:item.price,
-            children:item.children.map((child) =>({id:child.id, quantity:0})),
+            children:item.children.map((child) =>({id:child.id, quantity:child.quantity})),
             unit_id:item.unit_id,
             printer_id:item.printer_id,
             category_id:item.category_id,
-            out_of_stock: item.out_of_stock,
+            category_type:item.category_type,
             sell_by_weight:item.sell_by_weight,
             description:item.description
         })
@@ -69,11 +69,11 @@ export const ItemService = {
         const {data} = await axiosClient().post<BaseResponse<undefined>>(`item`,{
             name:item.name,
             price:item.price,
-            children:item.children.map((child) =>({id:child.id, quantity:0})),
+            children:item.children.map((child) =>({id:child.id, quantity:child.quantity})),
             unit_id:item.unit_id,
             printer_id:item.printer_id,
             category_id:item.category_id,
-            out_of_stock:item.out_of_stock,
+            category_type:item.category_type,
             sell_by_weight:item.sell_by_weight,
             description:item.description
         })

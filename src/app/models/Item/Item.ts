@@ -1,3 +1,4 @@
+import { CATEGORY_TYPE } from "../../constants/enum/CATEGORY_TYPE";
 import { ChidlrenItem } from "./item-children";
 
 export class ItemEntity {
@@ -10,6 +11,7 @@ export class ItemEntity {
     unit_type: string = "";
     category_id:number = 0;
     category_name: string = "";
+    category_type: CATEGORY_TYPE = CATEGORY_TYPE.food
     children: ChidlrenItem[] = [];
     out_of_stock: boolean = false;
     sell_by_weight:boolean = false;
