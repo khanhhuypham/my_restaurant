@@ -20,13 +20,14 @@ import { pageSize } from "../../constants/constant";
 
 
 export interface ItemListProps {
-    data: ItemEntity[]
+    data?: ItemEntity[]
     page: number
     limit: number
-    total_record: number
-    loading: boolean,
+    total_record?: number
+    loading?: boolean,
     category_id?: number | undefined,
     category_type?: number | undefined,
+    out_of_stock?: boolean | undefined,
     search_key?: string
     onPageChange?: ((page: number) => void)
     onEdit?: ((arg0: ItemEntity) => void)

@@ -1,58 +1,51 @@
-import { useEffect, useState } from "react";
-
-import { Anchor, Button, Card, message, Modal, Space, Typography } from "antd";
+import { useEffect, useRef, useState } from "react";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import { Button, message, Modal } from "antd";
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { ItemEntity, ItemEntityPage } from "../../models/item/item";
-import { menuDataArray } from "../../assets/menuData";
-import { MenuItem } from "../../../types";
-import lineImg from '../../assets/images/line.png';
-import { OrderModalContent } from "./OrderModalContent";
-import { useMediaQuery } from "react-responsive";
-import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
-import { cartSelector, removeItemFromCart, addItem } from "../../store/cart/cartSlice";
+import { OrderModalContent } from "./component/OrderModalContent";
+import { useAppSelector } from "../../hooks/useRedux";
+import { cartSelector } from "../../store/cart/cartSlice";
 import { categoryService } from "../../services/category/categoryService";
-import { Category } from "../../models/category/category";
-import { Pagination as pageModel } from '../../models/pagination';
 import { ItemService } from "../../services/item/ItemService";
-import { QuantityBtnGroup } from "../../component/Button/ButtonGroup";
-import { OrderCard } from "./OrderCard";
+import { ReactComponent as Icon_prev } from "../../assets/icons/angle-double-left.svg";
+import { ReactComponent as Icon_next } from "../../assets/icons/angle-double-right.svg";
+import { ItemListProps } from "../ItemManagement/ItemMangement";
+import { OrderCard } from "./component/OrderCard";
+import { Category } from "../../models/category/category";
 
-interface navItem {
-    key: number;
-    href: string;
-    title: JSX.Element;
-}
+
+
+
 
 export const Order = () => {
-    const [data, setData] = useState<ItemEntityPage>(new ItemEntityPage());
-    const [categories, setCategories] = useState<navItem[]>(navMenuItems);
+    let sliderRef = useRef<Slider | null>(null)
+    // const [data, setData] = useState<ItemEntityPage>(new ItemEntityPage());
+    const [categories, setCategories] = useState<Category[]>([]);
     const cardSlice = useAppSelector(cartSelector);
-    const dispatch = useAppDispatch();
     const [dialog, setDialog] = useState<[open: boolean, content?: JSX.Element | undefined]>([false, undefined]);
 
-    const [parameter, setParameter] = useState({
-        pagination: { ...(new pageModel()), limit: 100, page: 1 },
-        category_id: -1
+    const [parameter, setParameter] = useState<ItemListProps>({
+        // category_type:7,
+        // category_id:1,
+        out_of_stock: false,
+        search_key: "",
+        page: 1,
+        limit: 200,
     });
 
 
-    const isItemExistingInStore = (item: ItemEntity): boolean => {
-        let result = cardSlice.items.find((element) => element.id == item.id)
-        return result === undefined ? false : true
-    }
+    const handleCategoryClick = (categoryId:number) => {
+        setCategories((prevCategories) => prevCategories.map((item) =>
+                item.id === categoryId
+                    ? { ...item, select: true }
+                    : { ...item, select: false }
+            ))
+    };
 
 
-    // const updateItemInStore = (item: ItemEntity) => {
-    //     let result = cardSlice.items.find((element) => element.id == item.id)
-
-    //     if (result) {
-    //         dispatch(setCart)
-    //     }
-
-       
-    // }
-
-    
 
 
     const showModalCreate = (item: ItemEntity) => {
@@ -73,79 +66,98 @@ export const Order = () => {
 
         categoryService.List().then((res) => {
 
-            const categoryList: navItem[] = res.data.map((element) => ({
-                key: element.id,
-                href: `#${element.id.toString()}`,
-                title: <p className="font-semibold text-lg">{element.name}</p>
-            }))
-            setCategories(categoryList)
-            console.log(categoryList)
+            if (res.status == 200) {
+                setCategories(res.data)
+            } else {
+                message.error(res.message)
+            }
 
         }).catch((error) => {
             console.log(error)
         })
 
-        // ItemService.List(parameter).then((res) => {
-          
-        //     if (res.status == 200) {
-        //         setData(res.data);
-        //         console.log(data.list)
-        //     } else {
-        //         message.error(res.message)
-        //     }
+        ItemService.List(parameter).then((res) => {
 
-        // }).catch((error) => {
-        //     console.log(error);
-        // });
+            if (res.status == 200) {
+          
+                const {list, ...rest } = res.data;
+                const result = { ...rest, data: list };
+                console.log(result)
+                setParameter(result);
+               
+            } else {
+                message.error(res.message)
+            }
+
+        }).catch((error) => {
+            console.log(error);
+        });
 
     }, []);
 
 
 
     return (
-        <>
+        <div >
+            <div className="w-full bg-white">
+                <div className=" flex justify-center items-center">
+                    <Button className="outline-none shadow-lg h-full rounded-full hover:bg-gray-100"
+                        onClick={() => sliderRef.current?.slickPrev()}
+                    ><Icon_prev /></Button>
+                    <div className="w-[50%]">
+                        <Slider {...settings} ref={sliderRef}>
+                            {categories.map((cate) => {
+                                return (
+                                    <div
+                                        key={cate.id}
+                                        className={`py-6 px-2 text-center cursor-pointer text-lg font-bold ${cate.select ? "border-b-4  border-solid border-orange-500" : ""}`}
+                                        onClick={() => handleCategoryClick(cate.id)}
+                                    >
+                                        <span className={cate.select ? "text-orange-500" : ""}>{cate.name}</span>
+                                    </div>
+                                );
+                            })
+                            }
+                        </Slider>
+                    </div>
+                    <Button
+                        className="outline-none shadow-lg rounded-full hover:bg-gray-100"
+                        onClick={() => sliderRef.current?.slickNext()}
+                    >
+                        <Icon_next />
+                    </Button>
+                </div>
+            </div>
 
-            <div className="flex pl-[10%] pr-[15%]">
-                <Anchor
-                    offsetTop={75}
-                    targetOffset={125}
-                    items={categories}
-                />
-                <div className="space-y-16">
-                    {categories.map((cate) => {
-                        return (
-                            <div key={cate.key} className="space-y-10">
+            <div className="md:px-5 lg:px-10">
+                {categories.map((cate) => {
+                    return (
+                        <div key={cate.id} className="">
 
-                                <div className="space-y-2">
-                                    <h1 className="text-center font-bold text-3xl">
-                                        {cate.title}
-                                    </h1>
-                                    <img
-                                        className="h-6 flex m-auto"
-                                        alt="line"
-                                        src={lineImg}
-                                    />
+                            <div className="space-y-2">
+                                <h1 className="text-start font-bold text-3xl">
+                                    {cate.name}
+                                </h1>
 
-                                </div>
+                            </div>
 
-                                <div className="grid grid-cols-4 gap-x-0 gap-y-8 justify-items-center">
-                                    {data.list
-                                    .filter((item: ItemEntity) => item.category_id === cate.key)
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-5 justify-items-center">
+                                {parameter.data && parameter.data.filter((item: ItemEntity) => item.category_id === cate.id)
                                     .map((item: ItemEntity) => {
-                                        return   (
+                                        return (
                                             <OrderCard
                                                 key={item.id}
-                                                item={item} 
+                                                item={item}
                                                 onClick={() => showModalCreate(item)}
                                             />
                                         )
-                                    })}
-                                </div>
-                            </div>  
-                        );
-                    })}
-                </div>
+                                })}
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
+
 
             <Modal
 
@@ -162,7 +174,7 @@ export const Order = () => {
                 {dialog[1] ?? <></>}
             </Modal>
 
-        </>
+        </div>
 
     );
 };
@@ -179,3 +191,40 @@ const navMenuItems = [
 ];
 
 
+var settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 7,
+    slidesToScroll: 7,
+    responsive: [
+        {
+            breakpoint: 1280,
+            settings: {
+                slidesToShow: 5,
+                slidesToScroll: 5,
+            },
+        },
+        {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 4,
+                slidesToScroll: 4,
+            },
+        },
+        {
+            breakpoint: 768,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
+            },
+        },
+        {
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2,
+            },
+        },
+    ],
+};

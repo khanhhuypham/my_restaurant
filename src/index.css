@@ -1,22 +1,22 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+        monospace;
 }
 
 button.bag-button:hover {
     background-color: #303b41 !important;
 }
 
-
+/* 
 .ant-anchor-wrapper .ant-anchor .ant-anchor-link-active>.ant-anchor-link-title {
     color: #A71316;
 }
@@ -27,28 +27,20 @@ button.bag-button:hover {
 
 .ant-scroll-number-only-unit {
     font-size: medium;
-    color:white;
+    color: white;
     padding: "5px";
     font-weight: 700;
 }
 
-.ant-menu-light .ant-menu-item-selected a{
-    color:#A71316;
-}
-
-.ant-menu-light.ant-menu-horizontal >.ant-menu-item-selected::after{
-    border-bottom-color: #A71316;
-}
-
-.ant-menu-light.ant-menu-horizontal >.ant-menu-item-selected::before:hover{
-    border-bottom-color: #A71316;
-}
-
-/* .ant-tabs-bottom >div>.ant-tabs-nav{
-    margin-bottom: 0;
-} */
-/* 
-a:hover{
+.ant-menu-light .ant-menu-item-selected a {
     color: #A71316;
+}
+
+.ant-menu-light.ant-menu-horizontal>.ant-menu-item-selected::after {
+    border-bottom-color: #A71316;
+} */
+
+/* .ant-menu-light.ant-menu-horizontal>.ant-menu-item-selected::before:hover {
+    border-bottom-color: #A71316;
 } */
 

@@ -1,15 +1,19 @@
 export enum user_status {
     ACTIVE = 1,
-    INACTIVE = 2,  
+    INACTIVE = 2,
 }
 
-// namespace user_status {
-//     export function toString(mode: user_status): string {
-//         return user_status[mode];
-//     }
-
-  
-// }
+export enum CategoryType {
+    EXTRA_CHARGE = 0,
+    FOOD =1,
+        DRINK = 2,
+        OTHER = 3,
+        SEAFOOD = 4,
+        SERVICE = 5,
+        BUFFET_TICKET = 6,
+        COMBO = 7,
+        ADD_ONS = 8
+}
 
 export enum OrderType {
     SUBSCRIPTION = 1,

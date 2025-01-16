@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import {
-    DesktopOutlined,
-    FileOutlined,
-    HomeOutlined,
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    PieChartOutlined,
+    UserOutlined,
+    VideoCameraOutlined,
+    UploadOutlined,
     ShoppingOutlined,
 } from "@ant-design/icons";
-import type { MenuProps } from "antd";
+
 import { Badge, Breadcrumb, Button, Layout, Menu, theme } from "antd";
 import { NavLink, Outlet } from "react-router-dom";
 import { ROUTE_LINK } from "../../routes/route-link";
@@ -18,19 +15,21 @@ import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { BagDrawer } from "../BagDrawer/BagDrawer";
 import { cartSelector } from "../../store/cart/cartSlice";
 import logo from "../../assets/images/logo-light.png";
+import Sidebar from "./side-bar";
+import Footer from "./footer";
 
 
-const { Header, Content, Footer } = Layout;
+const { Header, Sider,Content } = Layout;
 
 
 const items = [
     {
         key: String(1),
         label: (<NavLink to={ROUTE_LINK.HOME}>
-            <img src={logo} alt="logo" className=" w-16 h-16"/>
+            <img src={logo} alt="logo" className=" w-16 h-16" />
         </NavLink>),
     },
- 
+
     {
         key: String(2),
         label: (<NavLink to={ROUTE_LINK.DASHBOARD}>
@@ -45,7 +44,7 @@ const items = [
     },
     {
         key: String(4),
-        label: (<NavLink to={ROUTE_LINK.CATEGORY_MANAGEMENT}> 
+        label: (<NavLink to={ROUTE_LINK.CATEGORY_MANAGEMENT}>
             <span className="font-semibold text-xl">Category</span>
         </NavLink>
         )
@@ -53,7 +52,7 @@ const items = [
 
     {
         key: String(5),
-        label: (<NavLink to={ROUTE_LINK.ITEM_MANAGEMENT}> 
+        label: (<NavLink to={ROUTE_LINK.ITEM_MANAGEMENT}>
             <span className="font-semibold text-xl">Item</span>
         </NavLink>
         )
@@ -61,84 +60,91 @@ const items = [
 
     {
         key: String(6),
-        label: (<NavLink to={ROUTE_LINK.CHARGE_METHOD}> 
+        label: (<NavLink to={ROUTE_LINK.CHARGE_METHOD}>
             <span className="font-semibold text-xl">Charge method</span>
         </NavLink>
         )
     }
 ]
 
+const siderStyle: React.CSSProperties = {
+    overflow: 'auto',
+    height: '100vh',
+    position: 'fixed',
+    insetInlineStart: 0,
+    top: 0,
+    bottom: 0,
+    scrollbarWidth: 'thin',
+    scrollbarGutter: 'stable',
+  };
+  
+
 
 export const CustomLayout: React.FC = () => {
-
-
     const cardSlice = useAppSelector(cartSelector);
     const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-
+    const [collapsed, setCollapsed] = useState(false);
 
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
     return (
-        <Layout>
-            <Header
-                className="bg-white"
-                style={{
-                    position: 'sticky',
-                    top: 0,
-                    zIndex: 1,
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                }}
-            >
-                <div className="demo-logo" />
-                <Menu
-                    // theme="dark"
-                    mode="horizontal"
-                    defaultSelectedKeys={['1']}
-                    items={items}
-                    style={{ flex: 1, minWidth: 0 }}
-                />
+        <Layout hasSider>
+            <Sider trigger={null} collapsible collapsed={collapsed} style={siderStyle}>
+                <div className="demo-logo-vertical" />
+                <Sidebar/>
+            </Sider>
+            <Layout style={{ marginInlineStart: 200 }}>
 
-     
-                <Badge
-                    color={"#A71316"}
-                    count={cardSlice.items.length} 
-                    className="font-bold"
-                >
-                    <Button
-                        type="primary"
-                        shape="round"
-                        size="large"
-                        className="bg-black"
-                        icon={<ShoppingOutlined />}
-                        onClick={() => setOpenDrawer(true)}
-                    />
-                </Badge>
-
-            </Header>
-            <Content>
-                <div
-
+                <Header
                     style={{
-                        minHeight: 380,
-                        borderRadius: borderRadiusLG,
+                        position: 'sticky',
+                        top: 0,
+                        zIndex: 1,
+                        width: '100%',
+                        backgroundColor:"white"
+                 
                     }}
-
-                    className="bg-[#F0F0F0]"
                 >
-                    <Outlet />
-                </div>
-            </Content>
+                    <div className=" h-full w-full flex justify-end items-center">
+                    <Badge
+                        color={"#A71316"}
+                        count={cardSlice.items.length}
+                        className="font-bold"
+                    >
+                        <Button
+                            type="primary"
+                            shape="round"
+                            size="large"
+                            className="bg-black"
+                            icon={<ShoppingOutlined />}
+                            onClick={() => setOpenDrawer(true)}
+                        />
+                    </Badge>
+                    </div>
 
-            <BagDrawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} input={cardSlice.items}/>
-            
-            <Footer style={{ textAlign: 'center' }}>
-                Ant Design ©{new Date().getFullYear()} Created by Ant UED
-            </Footer>
-            
+                  
+
+                </Header>
+                <Content>
+                    <div
+
+                        style={{
+                            minHeight: 380,
+                            borderRadius: borderRadiusLG,
+                        }}
+
+                        className="bg-[#FFF4EE]"
+                    >
+                        <Outlet />
+                    </div>
+                </Content>
+
+                <BagDrawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} input={cardSlice.items} />
+
+               <Footer/>
+            </Layout>
         </Layout>
     );
 };

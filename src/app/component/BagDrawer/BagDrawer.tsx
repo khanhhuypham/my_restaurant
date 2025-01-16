@@ -14,15 +14,16 @@ import { useAppDispatch } from "../../hooks/useRedux";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_LINK } from "../../routes/route-link";
 import { ItemEntity } from "../../models/item/item";
+import { hover } from "@testing-library/user-event/dist/hover";
 
 
 export const BagDrawer = (
     { openDrawer, setOpenDrawer, input }:
-    {
-        openDrawer: boolean;
-        setOpenDrawer: Dispatch<SetStateAction<boolean>>;
-        input: ItemEntity[]
-    }
+        {
+            openDrawer: boolean;
+            setOpenDrawer: Dispatch<SetStateAction<boolean>>;
+            input: ItemEntity[]
+        }
 ) => {
     const [data, setData] = useState<ItemEntity[]>([])
 
@@ -35,7 +36,7 @@ export const BagDrawer = (
 
     const renderDrawerTitle = (
         <div className="flex items-center justify-between">
-            <span className="font-bold text-xl">My Bag</span>
+            <span className="font-bold text-xl">Giỏ hàng của bạn</span>
             <Button
                 aria-label="close-drawer-button"
                 shape="circle"
@@ -46,60 +47,34 @@ export const BagDrawer = (
         </div>
     );
 
-    const renderListHeader = (
-        <div className="space-y-4 p-0">
-            <hr className="solid" />
-            <div className="px-5">
-                <div className="text-xl font-semibold">
-                    New Chopstix Restaurant
-                </div>
-                <div>
-                    <EnvironmentFilled className="text-red-700" /> 123 Fake
-                    Street, Hayward, CA 94544
-                </div>
-                <div>
-                    <PhoneFilled className="text-red-700" /> (510) 555-1234
-                </div>
-            </div>
-            <hr className="solid" />
-        </div>
-    );
+
 
     const renderCostFooter = (
-        <div >
-            <div className="flex flex-col p-4 ">
-                <span className="text-lg font-semibold">
-                    Subtotal: ${data.map((item) => Number(item.price) * Number(item.quantity)).reduce((acc, curr) => acc + curr, 0).toFixed(3)}
+        <div className="shadow-lg p-4 space-y-2">
+
+            <div className="flex justify-between text-lg font-semibold">
+
+                <span>
+                    Total
                 </span>
-
-
-                <span className="text-md font-normal">
-                    Tax (10.75%): $4.30
-                </span>
-
-            </div>
-
-            <hr className="solid" />
-            <div className="p-4">
-                <span className="text-lg font-semibold">
-                    Total: ${data.map((item) => Number(item.price) * Number(item.quantity)).reduce((acc, curr) => acc + curr, 0).toFixed(3)}
+                <span className="text-orange-500">
+                    {data.map((item) => Number(item.price) * Number(item.quantity)).reduce((acc, curr) => acc + curr, 0).toFixed(3)}
                 </span>
             </div>
 
 
             <div >
-                <Button
-                    className="rounded-none font-bold bg-red-700"
-                    block
-                    type="primary"
-                    size="large"
+                <button
+                    className="rounded-3xl bg-custom-gradient hover:bg-custom-gradient-hover w-full h-11 font-bold text-white"
+                   
                     onClick={() => {
                         setOpenDrawer(false)
                         navigate(ROUTE_LINK.PAYMENT)
                     }}
+                 
                 >
-                    CHECKOUT
-                </Button>
+                    THANH TOÁN ĐƠN HÀNG
+                </button>
             </div>
         </div>
     );
@@ -116,7 +91,7 @@ export const BagDrawer = (
                         onClick={() => {
 
                             let cloneData = data.map(element => {
-                                
+
                                 if (item.id === element.id) {
                                     let quantity = element.quantity - 1
                                     quantity = quantity <= 0 ? 0 : quantity
@@ -183,7 +158,7 @@ export const BagDrawer = (
         setData(input)
     }, [input])
 
-   
+
 
 
     return (
@@ -202,9 +177,7 @@ export const BagDrawer = (
             open={openDrawer}
         >
             <div className="h-full flex flex-col">
-                <div className="flex-none">
-                    {renderListHeader}
-                </div>
+
 
                 <List
                     className="flex-1"
@@ -226,8 +199,8 @@ export const BagDrawer = (
                                         <div>Note:{item.note}</div>
                                     )
                                 }
-                                
-    
+
+
                                 {renderBtnChangeQuantity(item)}
                             </div>
                         </List.Item>
