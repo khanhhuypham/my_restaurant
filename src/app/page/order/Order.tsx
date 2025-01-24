@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { Button, message, Modal } from "antd";
 import { CloseCircleOutlined } from '@ant-design/icons';
-import { ItemEntity, ItemEntityPage } from "../../models/item/item";
+import { ItemEntity } from "../../models/item/item";
 import { OrderModalContent } from "./component/OrderModalContent";
 import { useAppSelector } from "../../hooks/useRedux";
 import { cartSelector } from "../../store/cart/cartSlice";

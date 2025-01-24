@@ -20,7 +20,7 @@ export const ROUTE_LINK = {
     STRIPE_CHECKOUT_FORM: "/stripe-checkout-form",
 
     //================================
-    BOOKING: "/booking",
+    VOUCHER_MANAGEMENT: "/voucher-management",
     //================================
     MINIAPP_USER_MANAGEMENT: "/user_management",
     //================================
